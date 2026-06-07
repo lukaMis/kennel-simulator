@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://o2no77sey05"]
+
+[ext_resource type="Script" uid="uid://u04m106di0dw" path="res://scripts/dog_ui.gd" id="1_wbx4q"]
+[ext_resource type="PackedScene" uid="uid://05njptqwx7pn" path="res://scenes/hunger_ui.tscn" id="2_1hs5b"]
+[ext_resource type="PackedScene" uid="uid://cf05dnkmycgsy" path="res://scenes/energy_ui.tscn" id="3_nf10f"]
+
+[node name="DogUI" type="Control" unique_id=1588688185]
+custom_minimum_size = Vector2(175, 275)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 175.0
+offset_bottom = 275.0
+script = ExtResource("1_wbx4q")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=982634923]
+visible = false
+custom_minimum_size = Vector2(175, 275)
+layout_mode = 0
+offset_right = 175.0
+offset_bottom = 275.0
+theme_override_constants/separation = 10
+
+[node name="LabelHunger" type="Label" parent="VBoxContainer" unique_id=943937713]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Hunger label"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HungerBar" type="ProgressBar" parent="VBoxContainer" unique_id=1239157321]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+step = 1.0
+value = 100.0
+
+[node name="ButtonFeed" type="Button" parent="VBoxContainer" unique_id=987015209]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Button feed"
+
+[node name="LabelEnergy" type="Label" parent="VBoxContainer" unique_id=841251987]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Energy label"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnergyBar" type="ProgressBar" parent="VBoxContainer" unique_id=1341189782]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ButtonSleep" type="CheckButton" parent="VBoxContainer" unique_id=2088762501]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Pika is sleeping"
+
+[node name="ButtonWork" type="Button" parent="VBoxContainer" unique_id=982615633]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Go to work!"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="." unique_id=1940736317]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 289.0
+offset_right = 182.0
+offset_bottom = 580.0
+theme_override_constants/separation = 10
+
+[node name="HungerUI" parent="VBoxContainer2" unique_id=815053143 instance=ExtResource("2_1hs5b")]
+layout_mode = 2
+
+[node name="EnergyUI" parent="VBoxContainer2" unique_id=1091962703 instance=ExtResource("3_nf10f")]
+layout_mode = 2
+
+[node name="ButtonWork2" type="Button" parent="VBoxContainer2" unique_id=841578536]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "Go to work!"
+
+[connection signal="pressed" from="VBoxContainer/ButtonFeed" to="." method="_on_button_feed_pressed"]
+[connection signal="toggled" from="VBoxContainer/ButtonSleep" to="." method="_on_button_sleep_toggled"]
+[connection signal="pressed" from="VBoxContainer/ButtonWork" to="." method="_on_button_work_pressed"]
+[connection signal="pressed" from="VBoxContainer2/ButtonWork2" to="." method="_on_button_work_2_pressed"]

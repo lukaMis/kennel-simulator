@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cy3ai5s8u0ecj"]
+
+[ext_resource type="Script" uid="uid://3eym0xoo0e5p" path="res://scripts/info_bar.gd" id="1_envc0"]
+
+[node name="InfoBar" type="Control" unique_id=774993481]
+custom_minimum_size = Vector2(800, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_envc0")
+
+[node name="LabelInfoBar" type="Label" parent="." unique_id=1129687765]
+custom_minimum_size = Vector2(800, 30)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 20
+text = "Info about game is displayed here"
+horizontal_alignment = 1

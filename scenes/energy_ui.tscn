@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cf05dnkmycgsy"]
+
+[ext_resource type="Script" uid="uid://b714o64bmwx14" path="res://scripts/energy_ui.gd" id="1_exwys"]
+[ext_resource type="PackedScene" uid="uid://bl2xby03ija4a" path="res://scenes/progress_display.tscn" id="1_qfpx7"]
+
+[node name="EnergyUI" type="Control" unique_id=815053143]
+custom_minimum_size = Vector2(175, 120)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_exwys")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=449288596]
+custom_minimum_size = Vector2(175, 120)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 10
+
+[node name="ProgressDisplay" parent="VBoxContainer" unique_id=679757053 instance=ExtResource("1_qfpx7")]
+layout_mode = 2
+
+[node name="ButtonSleep" type="CheckButton" parent="VBoxContainer" unique_id=1780730570]
+layout_mode = 2
+text = "Button sleep"
+
+[connection signal="toggled" from="VBoxContainer/ButtonSleep" to="." method="_on_button_sleep_toggled"]

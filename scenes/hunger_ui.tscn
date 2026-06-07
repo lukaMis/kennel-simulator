@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://05njptqwx7pn"]
+
+[ext_resource type="PackedScene" uid="uid://bl2xby03ija4a" path="res://scenes/progress_display.tscn" id="1_m0bkf"]
+[ext_resource type="Script" uid="uid://b6h7ponm2sx1" path="res://scripts/hunger_ui.gd" id="1_mv8v0"]
+
+[node name="HungerUI" type="Control" unique_id=815053143]
+custom_minimum_size = Vector2(175, 120)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_mv8v0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=449288596]
+custom_minimum_size = Vector2(175, 120)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 10
+
+[node name="ProgressDisplay" parent="VBoxContainer" unique_id=679757053 instance=ExtResource("1_m0bkf")]
+layout_mode = 2
+
+[node name="ButtonFeed" type="Button" parent="VBoxContainer" unique_id=1182055153]
+layout_mode = 2
+text = "Button feed"
+
+[connection signal="pressed" from="VBoxContainer/ButtonFeed" to="." method="_on_button_feed_pressed"]

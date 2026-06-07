@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DogResource" format=3 uid="uid://dmifi8ebbyes0"]
+
+[ext_resource type="Script" uid="uid://om7m07qj2rid" path="res://scripts/dog_resource.gd" id="1_opiln"]
+
+[resource]
+script = ExtResource("1_opiln")
+name = "Rex"
+hunger_drain_rate = 4
+energy_drain_rate = 6
+metadata/_custom_type_script = "uid://om7m07qj2rid"

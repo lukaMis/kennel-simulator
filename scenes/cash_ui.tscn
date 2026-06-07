@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bnwrn0w4t3egl"]
+
+[ext_resource type="Script" uid="uid://bpppcu1k8x8td" path="res://scripts/cash_ui.gd" id="1_obcji"]
+
+[node name="CashUI" type="Control" unique_id=214257894]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 150.0
+offset_bottom = 25.0
+script = ExtResource("1_obcji")
+
+[node name="LabelCash" type="Label" parent="." unique_id=401914642]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 23.0
+text = "Money available: 50"

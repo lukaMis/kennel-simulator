@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://djm3p85sxfetw"]
+
+[ext_resource type="Script" uid="uid://dejq8rjpnnwa3" path="res://scripts/main.gd" id="1_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://o2no77sey05" path="res://scenes/dog_ui.tscn" id="2_sugp2"]
+
+[node name="Main" type="Node" unique_id=782063]
+script = ExtResource("1_0wfyh")
+
+[node name="Timer" type="Timer" parent="." unique_id=2079577393]
+autostart = true
+
+[node name="DogUIPika" parent="." unique_id=1588688185 instance=ExtResource("2_sugp2")]
+
+[node name="DogUIRon" parent="." unique_id=1123725809 instance=ExtResource("2_sugp2")]
+offset_left = 182.0
+offset_right = 222.0
+
+[node name="DogUIRex" parent="." unique_id=74115109 instance=ExtResource("2_sugp2")]
+offset_left = 359.0
+offset_right = 399.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bl2xby03ija4a"]
+
+[ext_resource type="Script" uid="uid://dcdfkosuh4s1h" path="res://scripts/progress_display.gd" id="1_c85v7"]
+
+[node name="ProgressDisplay" type="Control" unique_id=679757053]
+custom_minimum_size = Vector2(175, 75)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_c85v7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=710589546]
+custom_minimum_size = Vector2(175, 75)
+layout_mode = 0
+offset_right = 81.0
+offset_bottom = 54.0
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=2108676588]
+custom_minimum_size = Vector2(175, 30)
+layout_mode = 2
+text = "Stats label"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=1855844794]
+custom_minimum_size = Vector2(175, 30)
+layout_mode = 2
+step = 1.0
+value = 100.0
