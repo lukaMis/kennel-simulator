@@ -12,12 +12,11 @@ script = ExtResource("1_0wfyh")
 autostart = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=740714645]
-offset_top = 30.0
+offset_top = 64.0
 offset_right = 800.0
-offset_bottom = 630.0
+offset_bottom = 664.0
 theme_override_constants/separation = 20
 alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="DogUIPika" parent="HBoxContainer" unique_id=1588688185 instance=ExtResource("2_sugp2")]
 custom_minimum_size = Vector2(170, 0)
@@ -32,9 +31,14 @@ custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 
 [node name="CashUI" parent="." unique_id=214257894 instance=ExtResource("3_sugp2")]
-offset_right = 160.0
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 170.0
+offset_bottom = 36.0
 
 [node name="InfoBar" parent="." unique_id=774993481 instance=ExtResource("4_jyhfs")]
+offset_top = 8.0
 offset_right = 800.0
+offset_bottom = 48.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
