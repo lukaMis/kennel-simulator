@@ -12,7 +12,6 @@ func setup_dog(dog_data: DogResource) -> void:
 	hunger_ui.setup_hunger(dog)
 	energy_ui.setup_energy(dog)
 	button_work.text = dog.name + " Go Fetch"
-	pass
 
 func update_ui() -> void:
 	if dog:
@@ -24,12 +23,10 @@ func update_ui() -> void:
 		if !dog.is_sleeping and dog.energy == 0:
 			_force_sleep_switch(true)
 			GlobalState.game_info_change(dog.name + " passed out from exhaustion!")
-	pass
 
 func _force_sleep_switch(is_sleeping: bool) -> void:
 	# Reaches into EnergyUI and forces it to visually flip its CheckButton
 	energy_ui.force_sleep_state(is_sleeping)
-	pass
 
 func _on_button_work_pressed() -> void:
 	if !dog:
@@ -50,4 +47,3 @@ func _on_button_work_pressed() -> void:
 	GlobalState.add_money(GameConstants.WORK_PAYOUT)
 	print(dog.name, " successfully fetched items! You earned: ", GameConstants.WORK_PAYOUT)
 	GlobalState.game_info_change(dog.name + " successfully fetched items! You earned: " + str(GameConstants.WORK_PAYOUT))
-	pass

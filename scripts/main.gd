@@ -17,11 +17,6 @@ func _ready() -> void:
 	ui_pika.setup_dog(dog_pika)
 	ui_ron.setup_dog(dog_ron)
 	ui_rex.setup_dog(dog_rex)
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func _on_timer_timeout() -> void:
 	dog_pika.tick_stats()
@@ -36,4 +31,3 @@ func _on_timer_timeout() -> void:
 	print(dog_pika.name, " Hunger: ", dog_pika.hunger)
 	print(dog_ron.name, " Hunger: ", dog_ron.hunger)
 	print(dog_rex.name, " Hunger: ", dog_rex.hunger)
-	pass # Replace with function body.

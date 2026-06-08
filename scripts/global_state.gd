@@ -14,9 +14,8 @@ func _ready() -> void:
 	if file:
 		file.store_line("=== Simulation Session Started ===")
 		file.close()
-	pass
 
-func try_spend_money(spend_amount:int):
+func try_spend_money(spend_amount:int)-> bool:
 	if cash >= spend_amount:
 		cash -= spend_amount
 		# Notify the world that cash changed!
@@ -34,14 +33,12 @@ func add_money(amount: int) -> void:
 	cash_changed.emit(cash)
 	print("GlobalState: Earned $", amount, ". Total: $", cash)
 	game_info_change("Earned $" + str(amount) + ". Wallet: $" + str(cash))
-	pass
 
 func game_info_change(new_game_info: String) -> void:
 	game_info = new_game_info
 	game_info_update.emit(game_info)
 	# Execute the disk save automatically!
 	_append_log_to_file(new_game_info)
-	pass
 
 func _append_log_to_file(message: String) -> void:
 	# 1. Grab system time dictionary
@@ -57,4 +54,3 @@ func _append_log_to_file(message: String) -> void:
 		file.seek_end() # CRITICAL: Move the typing cursor to the very bottom of the file!
 		file.store_line(log_line)
 		file.close()
-	pass
