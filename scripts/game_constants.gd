@@ -14,3 +14,6 @@ const FEED_HUNGER_GAIN: int = 10
 const VERY_HUNGRY_TRESHOLD: int = 25
 const STARTVING_TRESHOLD: int = 0
 const MAX_STAT_VALUE: int = 100
+
+# --- Log Constants ---
+const LOG_FILE_PATH: String = "user://kennel_simulator_log.txt"

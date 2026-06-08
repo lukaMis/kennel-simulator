@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://b3gui258ct5wp"]
+
+[ext_resource type="Script" uid="uid://crhlc4u43d61o" path="res://scripts/log_viewer.gd" id="1_2b6kg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2b6kg"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="LogViewer" type="Control" unique_id=873212913]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2b6kg")
+
+[node name="ModalPanel" type="PanelContainer" parent="." unique_id=1728552694]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -231.0
+offset_right = 150.0
+offset_bottom = 231.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2b6kg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalPanel" unique_id=1486800141]
+custom_minimum_size = Vector2(500, 460)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LabelHeader" type="Label" parent="ModalPanel/VBoxContainer" unique_id=1270729981]
+layout_mode = 2
+text = "SYSTEM EVENT LOG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ModalPanel/VBoxContainer" unique_id=1379527628]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LabelContents" type="Label" parent="ModalPanel/VBoxContainer/ScrollContainer" unique_id=198687715]
+custom_minimum_size = Vector2(380, 380)
+layout_mode = 2
+size_flags_horizontal = 6
+autowrap_mode = 2
+
+[node name="ButtonLogClose" type="Button" parent="ModalPanel/VBoxContainer" unique_id=1665570840]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Close"
+
+[node name="ButtonLogOpen" type="Button" parent="." unique_id=1471355034]
+layout_mode = 1
+offset_left = 132.0
+offset_top = 162.0
+offset_right = 243.0
+offset_bottom = 193.0
+text = "📋 View Log"
+
+[connection signal="pressed" from="ModalPanel/VBoxContainer/ButtonLogClose" to="." method="_on_button_log_close_pressed"]
+[connection signal="pressed" from="ButtonLogOpen" to="." method="_on_button_log_open_pressed"]

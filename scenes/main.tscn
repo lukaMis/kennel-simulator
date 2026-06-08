@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://o2no77sey05" path="res://scenes/dog_ui.tscn" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://bnwrn0w4t3egl" path="res://scenes/cash_ui.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://cy3ai5s8u0ecj" path="res://scenes/info_bar.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://b3gui258ct5wp" path="res://scenes/log_viewer.tscn" id="5_tbgi4"]
 
 [node name="Main" type="Node" unique_id=782063]
 script = ExtResource("1_0wfyh")
@@ -12,9 +13,14 @@ script = ExtResource("1_0wfyh")
 autostart = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=740714645]
-offset_top = 64.0
-offset_right = 800.0
-offset_bottom = 664.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 76.0
+offset_right = 400.0
+offset_bottom = 676.0
+grow_horizontal = 2
 theme_override_constants/separation = 20
 alignment = 1
 
@@ -37,8 +43,40 @@ offset_right = 170.0
 offset_bottom = 36.0
 
 [node name="InfoBar" parent="." unique_id=774993481 instance=ExtResource("4_jyhfs")]
-offset_top = 8.0
-offset_right = 800.0
-offset_bottom = 48.0
+custom_minimum_size = Vector2(800, 30)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 40.0
+offset_right = 400.0
+offset_bottom = 70.0
+grow_horizontal = 2
+
+[node name="LogViewer" parent="." unique_id=873212913 instance=ExtResource("5_tbgi4")]
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="ModalPanel" parent="LogViewer" index="0" unique_id=1728552694]
+offset_right = 250.0
+
+[node name="VBoxContainer" parent="LogViewer/ModalPanel" index="0" unique_id=1486800141]
+theme_override_constants/separation = 10
+
+[node name="ButtonLogOpen" parent="LogViewer" index="1" unique_id=1471355034]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = 32.0
+grow_horizontal = 0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="LogViewer"]
