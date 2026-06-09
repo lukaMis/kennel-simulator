@@ -14,14 +14,9 @@ func _ready() -> void:
 # NEW: This runs automatically every time GlobalState.game_info_change() is called anywhere
 func _on_global_info_update(new_info: String) -> void:
 	if modal_panel.visible:
-		# 1. Grab the system time natively right now
-		var time = Time.get_time_dict_from_system()
-		var timestamp = "[%02d:%02d:%02d] " % [time.hour, time.minute, time.second]
-
-		# 2. Append the new line directly to the UI string in memory!
-		# No disk reading required!
-		label_contents.text += "\n" + timestamp + new_info
-
+		# REFACTORED: No time dict lookup needed! Grab the pre-formatted line from memory.
+		if not GlobalState.log_history.is_empty():
+			label_contents.text += "\n" + GlobalState.log_history[-1]
 		# 3. Snap down
 		_scroll_to_bottom()
 
@@ -36,15 +31,10 @@ func _on_button_log_close_pressed() -> void:
 	modal_panel.hide()
 	button_log_open.show()
 
-# NEW: We isolated the file-reading logic into its own reusable helper function
+# REFACTORED: Completely memory-based optimization
 func _refresh_log_text() -> void:
-	if FileAccess.file_exists(GameConstants.LOG_FILE_PATH):
-		var file = FileAccess.open(GameConstants.LOG_FILE_PATH, FileAccess.READ)
-		if file:
-			label_contents.text = file.get_as_text()
-			file.close()
-	else:
-		label_contents.text = "No log entry file found on disk."
+	# Joins all lines in our array with newlines instantly. No file lookups required!
+	label_contents.text = "\n".join(GlobalState.log_history)
 
 # NEW: The asynchronous scrolling machine
 func _scroll_to_bottom() -> void:

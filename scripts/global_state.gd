@@ -2,6 +2,8 @@ extends Node
 
 var cash: int = GameConstants.STARTING_CASH
 var game_info : String = "Try to look after your dogs as best as you can!"
+# NEW: The in-memory buffer tracking all gameplay logs
+var log_history: Array[String] = []
 
 # A signal that fires whenever money changes, so any UI can update automatically!
 signal cash_changed(new_amount: int)
@@ -14,6 +16,8 @@ func _ready() -> void:
 	if file:
 		file.store_line("=== Simulation Session Started ===")
 		file.close()
+	# 2. Seed our in-memory array with the session start header
+	log_history.append("=== Simulation Session Started ===")
 
 func try_spend_money(spend_amount:int)-> bool:
 	if cash >= spend_amount:
@@ -37,20 +41,28 @@ func add_money(amount: int) -> void:
 func game_info_change(new_game_info: String) -> void:
 	game_info = new_game_info
 	game_info_update.emit(game_info)
-	# Execute the disk save automatically!
-	_append_log_to_file(new_game_info)
 
-func _append_log_to_file(message: String) -> void:
-	# 1. Grab system time dictionary
+	# 1. Grab system time and format the string
 	var time = Time.get_time_dict_from_system()
-
-	# 2. Format a string like: [20:15:32]
 	var timestamp = "[%02d:%02d:%02d] " % [time.hour, time.minute, time.second]
-	var log_line = timestamp + message
+	var log_line = timestamp + new_game_info
 
-	# FIX: Use READ_WRITE because Godot 4 dropped the APPEND flag
-	var file = FileAccess.open(GameConstants.LOG_FILE_PATH, FileAccess.READ_WRITE)
+	# 2. Push directly to memory array (Super fast!)
+	log_history.append(log_line)
+
+	# 3. Crash Guard: Batch flush to disk every 15 entries automatically
+	if log_history.size() % 15 == 0:
+		save_logs_to_disk()
+
+# Called automatically by Godot when the game engine shuts down/closes
+func _exit_tree() -> void:
+	save_logs_to_disk()
+
+# Helper function to dump the entire array history to disk
+func save_logs_to_disk() -> void:
+	var file = FileAccess.open(GameConstants.LOG_FILE_PATH, FileAccess.WRITE)
 	if file:
-		file.seek_end() # CRITICAL: Move the typing cursor to the very bottom of the file!
-		file.store_line(log_line)
+		for line in log_history:
+			file.store_line(line)
 		file.close()
+		print("GlobalState: Logs successfully flushed to disk storage.")
