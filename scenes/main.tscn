@@ -1,10 +1,14 @@
 [gd_scene format=3 uid="uid://djm3p85sxfetw"]
 
 [ext_resource type="Script" uid="uid://dejq8rjpnnwa3" path="res://scripts/main.gd" id="1_0wfyh"]
-[ext_resource type="PackedScene" uid="uid://o2no77sey05" path="res://scenes/dog_ui.tscn" id="2_sugp2"]
+[ext_resource type="PackedScene" uid="uid://dh6w5q0wd3m03" path="res://scenes/dog_manager.tscn" id="2_tefeu"]
+[ext_resource type="Script" uid="uid://om7m07qj2rid" path="res://scripts/dog_resource.gd" id="3_choun"]
 [ext_resource type="PackedScene" uid="uid://bnwrn0w4t3egl" path="res://scenes/cash_ui.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://cy3ai5s8u0ecj" path="res://scenes/info_bar.tscn" id="4_jyhfs"]
+[ext_resource type="Resource" uid="uid://d16mksddef2hp" path="res://dogs/dog_pika.tres" id="4_ya4ey"]
+[ext_resource type="Resource" uid="uid://cvejnhg2jd3n7" path="res://dogs/dog_ron.tres" id="5_eb6dy"]
 [ext_resource type="PackedScene" uid="uid://b3gui258ct5wp" path="res://scenes/log_viewer.tscn" id="5_tbgi4"]
+[ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="6_trceg"]
 
 [node name="Main" type="Node" unique_id=782063]
 script = ExtResource("1_0wfyh")
@@ -12,29 +16,17 @@ script = ExtResource("1_0wfyh")
 [node name="Timer" type="Timer" parent="." unique_id=2079577393]
 autostart = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=740714645]
+[node name="DogManager" parent="." unique_id=2074665961 instance=ExtResource("2_tefeu")]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -400.0
-offset_top = 76.0
-offset_right = 400.0
-offset_bottom = 676.0
+offset_left = -20.0
+offset_top = 80.0
+offset_right = 20.0
+offset_bottom = 120.0
 grow_horizontal = 2
-theme_override_constants/separation = 20
 alignment = 1
-
-[node name="DogUIPika" parent="HBoxContainer" unique_id=1588688185 instance=ExtResource("2_sugp2")]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-
-[node name="DogUIRon" parent="HBoxContainer" unique_id=1123725809 instance=ExtResource("2_sugp2")]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-
-[node name="DogUIRex" parent="HBoxContainer" unique_id=74115109 instance=ExtResource("2_sugp2")]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
+array_of_dogs = Array[ExtResource("3_choun")]([ExtResource("4_ya4ey"), ExtResource("5_eb6dy"), ExtResource("6_trceg")])
 
 [node name="CashUI" parent="." unique_id=214257894 instance=ExtResource("3_sugp2")]
 offset_left = 10.0
