@@ -42,8 +42,6 @@ func game_info_change(new_game_info: String) -> void:
 	game_info = new_game_info
 	game_info_update.emit(game_info)
 
-	# Execute the disk save automatically!
-	#_append_log_to_file(new_game_info)
 	# 1. Grab system time and format the string
 	var time = Time.get_time_dict_from_system()
 	var timestamp = "[%02d:%02d:%02d] " % [time.hour, time.minute, time.second]
@@ -68,18 +66,3 @@ func save_logs_to_disk() -> void:
 			file.store_line(line)
 		file.close()
 		print("GlobalState: Logs successfully flushed to disk storage.")
-
-#func _append_log_to_file(message: String) -> void:
-	## 1. Grab system time dictionary
-	#var time = Time.get_time_dict_from_system()
-#
-	## 2. Format a string like: [20:15:32]
-	#var timestamp = "[%02d:%02d:%02d] " % [time.hour, time.minute, time.second]
-	#var log_line = timestamp + message
-#
-	## FIX: Use READ_WRITE because Godot 4 dropped the APPEND flag
-	#var file = FileAccess.open(GameConstants.LOG_FILE_PATH, FileAccess.READ_WRITE)
-	#if file:
-		#file.seek_end() # CRITICAL: Move the typing cursor to the very bottom of the file!
-		#file.store_line(log_line)
-		#file.close()
