@@ -31,7 +31,7 @@ func _advance_minute() -> void:
 	minute += 1
 	if minute >= 60:
 		minute = 0
-	_advance_hour()
+		_advance_hour()
 
 	minute_passed.emit(minute)
 	_broadcast_formatted_time()
@@ -52,3 +52,4 @@ func _broadcast_formatted_time() -> void:
 	# Formats the time into a clean "Day 1 - 08:05" string
 	var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
 	time_formatted_updated.emit(time_string)
+	GlobalState.game_info_change("Current game time:" + " " + time_string)
