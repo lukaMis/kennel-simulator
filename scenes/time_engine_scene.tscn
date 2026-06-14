@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://3j34aeiqdyq"]
+
+[ext_resource type="Script" uid="uid://iu33li7pmblc" path="res://scripts/time_engine.gd" id="1_okkis"]
+
+[node name="TimeEngineScene" type="Node" unique_id=1530070152]
+script = ExtResource("1_okkis")

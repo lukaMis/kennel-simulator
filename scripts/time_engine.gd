@@ -23,7 +23,7 @@ func _process(delta: float) -> void:
 	_internal_timer += delta * time_multiplier
 
 	# Once our internal timer hits 60 "seconds", a simulation minute has passed!
-	if _internal_timer >= 60.0:
+	while _internal_timer >= 60.0:
 		_internal_timer -= 60.0
 		_advance_minute()
 
