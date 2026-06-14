@@ -1,0 +1,169 @@
+diff --git a/project.godot b/project.godot
+index c8f4897..caef647 100644
+--- a/project.godot
++++ b/project.godot
+@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
+ [autoload]
+ 
+ GlobalState="*uid://drq0il4l50c1d"
++TimeEngine="*uid://iu33li7pmblc"
+ 
+ [display]
+ 
+diff --git a/scenes/dog_manager.tscn b/scenes/dog_manager.tscn
+index c2713ae..963a114 100644
+--- a/scenes/dog_manager.tscn
++++ b/scenes/dog_manager.tscn
+@@ -2,14 +2,9 @@
+ 
+ [ext_resource type="Script" uid="uid://cl35tl1wr4s0i" path="res://scripts/dog_manager.gd" id="1_l7pup"]
+ [ext_resource type="PackedScene" uid="uid://o2no77sey05" path="res://scenes/dog_ui.tscn" id="2_iqi7r"]
+-[ext_resource type="Script" uid="uid://om7m07qj2rid" path="res://scripts/dog_resource.gd" id="2_s75d0"]
+-[ext_resource type="Resource" uid="uid://d16mksddef2hp" path="res://dogs/dog_pika.tres" id="3_xurjm"]
+-[ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="4_qsdsg"]
+-[ext_resource type="Resource" uid="uid://cvejnhg2jd3n7" path="res://dogs/dog_ron.tres" id="5_v4ubr"]
+ 
+ [node name="DogManager" type="HBoxContainer" unique_id=2074665961]
+ offset_right = 40.0
+ offset_bottom = 40.0
+ script = ExtResource("1_l7pup")
+-roster = Array[ExtResource("2_s75d0")]([ExtResource("3_xurjm"), ExtResource("4_qsdsg"), ExtResource("5_v4ubr")])
+ dog_ui_template = ExtResource("2_iqi7r")
+diff --git a/scenes/main.tscn b/scenes/main.tscn
+index 1273ae6..0e7159e 100644
+--- a/scenes/main.tscn
++++ b/scenes/main.tscn
+@@ -13,9 +13,6 @@
+ [node name="Main" type="Node" unique_id=782063]
+ script = ExtResource("1_0wfyh")
+ 
+-[node name="Timer" type="Timer" parent="." unique_id=2079577393]
+-autostart = true
+-
+ [node name="DogManager" parent="." unique_id=2074665961 instance=ExtResource("2_tefeu")]
+ anchors_preset = 5
+ anchor_left = 0.5
+@@ -69,6 +66,4 @@ offset_right = -1.0
+ offset_bottom = 32.0
+ grow_horizontal = 0
+ 
+-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+-
+ [editable path="LogViewer"]
+diff --git a/scripts/dog_manager.gd b/scripts/dog_manager.gd
+index 12f4dd1..96bc991 100644
+--- a/scripts/dog_manager.gd
++++ b/scripts/dog_manager.gd
+@@ -13,6 +13,10 @@ func _ready() -> void:
+ 	for dog_data in array_of_dogs:
+ 		_spawn_dog(dog_data)
+ 
++	# NEW: Tune into the cosmic broadcast!
++	# Every time the TimeEngine emits an hour_passed signal, tick the dogs.
++	TimeEngine.hour_passed.connect(_on_time_engine_hour_passed)
++
+ func _spawn_dog(dog_data: DogResource) -> void:
+ 	# Instantiate a brand new DogUI scene from the template
+ 	var new_ui = dog_ui_template.instantiate()
+@@ -26,7 +30,7 @@ func _spawn_dog(dog_data: DogResource) -> void:
+ 	# Save a reference to this UI so we can call update_ui() on it later
+ 	active_uis.append(new_ui)
+ 
+-func process_dog_ticks() -> void:
++func _on_time_engine_hour_passed(_current_hour: int) -> void:
+ 	# Tick stats for all data files
+ 	for dog_data in array_of_dogs:
+ 		dog_data.tick_stats()
+diff --git a/scripts/main.gd b/scripts/main.gd
+index 19a3048..0b9a000 100644
+--- a/scripts/main.gd
++++ b/scripts/main.gd
+@@ -1,13 +1,5 @@
+ extends Node
+ 
+-#var dog_pika = preload("res://dogs/dog_pika.tres")
+-#var dog_ron = preload("res://dogs/dog_ron.tres")
+-#var dog_rex = preload("res://dogs/dog_rex.tres")
+-#
+-#@onready var ui_pika = $HBoxContainer/DogUIPika
+-#@onready var ui_ron = $HBoxContainer/DogUIRon
+-#@onready var ui_rex = $HBoxContainer/DogUIRex
+-
+ @onready var dog_manager = $DogManager
+ @onready var cash_ui = $CashUI
+ @onready var info_bar = $InfoBar
+@@ -16,7 +8,3 @@ extends Node
+ func _ready() -> void:
+ 	# Main doesn't do anything on boot anymore! DogManager handles itself.
+ 	pass
+-
+-func _on_timer_timeout() -> void:
+-	# Main just tells the manager that a game tick happened.
+-	dog_manager.process_dog_ticks()
+diff --git a/scripts/time_engine.gd b/scripts/time_engine.gd
+new file mode 100644
+index 0000000..f7047d0
+--- /dev/null
++++ b/scripts/time_engine.gd
+@@ -0,0 +1,54 @@
++extends Node
++
++# --- SIGNALS (The Cosmic Broadcasts) ---
++signal minute_passed(current_minute: int)
++signal hour_passed(current_hour: int)
++signal day_passed(current_day: int)
++signal time_formatted_updated(time_string: String) # Great for updating a UI clock instantly
++
++# --- TIME VARIABLES ---
++var minute: int = 0
++var hour: int = 8  # Let's start the workday at 8:00 AM
++var day: int = 1
++
++# --- SIMULATION PACING ---
++# If multiplier is 60.0, then 1 real-world second = 1 in-game minute
++@export var time_multiplier: float = 60.0
++var _internal_timer: float = 0.0
++
++
++func _process(delta: float) -> void:
++	# Delta is the fraction of a second since the last frame.
++	# We multiply it by our simulation speed and add it to our accumulator.
++	_internal_timer += delta * time_multiplier
++
++	# Once our internal timer hits 60 "seconds", a simulation minute has passed!
++	if _internal_timer >= 60.0:
++		_internal_timer -= 60.0
++		_advance_minute()
++
++func _advance_minute() -> void:
++	minute += 1
++	if minute >= 60:
++		minute = 0
++	_advance_hour()
++
++	minute_passed.emit(minute)
++	_broadcast_formatted_time()
++
++func _advance_hour() -> void:
++	hour += 1
++	if hour >= 24:
++		hour = 0
++		_advance_day()
++
++	hour_passed.emit(hour)
++
++func _advance_day() -> void:
++	day += 1
++	day_passed.emit(day)
++
++func _broadcast_formatted_time() -> void:
++	# Formats the time into a clean "Day 1 - 08:05" string
++	var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
++	time_formatted_updated.emit(time_string)
+diff --git a/scripts/time_engine.gd.uid b/scripts/time_engine.gd.uid
+new file mode 100644
+index 0000000..be5a4c9
+--- /dev/null
++++ b/scripts/time_engine.gd.uid
+@@ -0,0 +1 @@
++uid://iu33li7pmblc

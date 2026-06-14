@@ -2,14 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cl35tl1wr4s0i" path="res://scripts/dog_manager.gd" id="1_l7pup"]
 [ext_resource type="PackedScene" uid="uid://o2no77sey05" path="res://scenes/dog_ui.tscn" id="2_iqi7r"]
-[ext_resource type="Script" uid="uid://om7m07qj2rid" path="res://scripts/dog_resource.gd" id="2_s75d0"]
-[ext_resource type="Resource" uid="uid://d16mksddef2hp" path="res://dogs/dog_pika.tres" id="3_xurjm"]
-[ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="4_qsdsg"]
-[ext_resource type="Resource" uid="uid://cvejnhg2jd3n7" path="res://dogs/dog_ron.tres" id="5_v4ubr"]
 
 [node name="DogManager" type="HBoxContainer" unique_id=2074665961]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_l7pup")
-roster = Array[ExtResource("2_s75d0")]([ExtResource("3_xurjm"), ExtResource("4_qsdsg"), ExtResource("5_v4ubr")])
 dog_ui_template = ExtResource("2_iqi7r")
