@@ -25,6 +25,10 @@ GlobalState="*uid://drq0il4l50c1d"
 window/size/viewport_width=800
 window/size/viewport_height=600
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GDQuest_GDScript_formatter/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
