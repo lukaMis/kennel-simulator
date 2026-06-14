@@ -14,6 +14,7 @@ func setup_hunger(dog_data: DogResource):
 func update_hunger_ui() -> void:
 	if _dog:
 		progress_display.update_progress_bar(_dog.hunger)
+		button_feed.disabled = _dog.is_sleeping
 
 func _on_button_feed_pressed() -> void:
 	if not _dog:

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://73n8b5xknedp"]
+
+[ext_resource type="Script" uid="uid://blbesc3nwxooh" path="res://scripts/game_time_display.gd" id="1_5srpu"]
+
+[node name="GameTimeDisplay" type="Control" unique_id=1332994588]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_5srpu")
+
+[node name="GameTimeDisplayLabel" type="Label" parent="." unique_id=1754812778]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://cvejnhg2jd3n7" path="res://dogs/dog_ron.tres" id="5_eb6dy"]
 [ext_resource type="PackedScene" uid="uid://b3gui258ct5wp" path="res://scenes/log_viewer.tscn" id="5_tbgi4"]
 [ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="6_trceg"]
+[ext_resource type="PackedScene" uid="uid://73n8b5xknedp" path="res://scenes/game_time_display.tscn" id="10_choun"]
 
 [node name="Main" type="Node" unique_id=782063]
 script = ExtResource("1_0wfyh")
@@ -18,18 +19,18 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -20.0
-offset_top = 80.0
+offset_top = 100.0
 offset_right = 20.0
-offset_bottom = 120.0
+offset_bottom = 140.0
 grow_horizontal = 2
 alignment = 1
 array_of_dogs = Array[ExtResource("3_choun")]([ExtResource("4_ya4ey"), ExtResource("5_eb6dy"), ExtResource("6_trceg")])
 
 [node name="CashUI" parent="." unique_id=214257894 instance=ExtResource("3_sugp2")]
 offset_left = 10.0
-offset_top = 11.0
+offset_top = 40.0
 offset_right = 170.0
-offset_bottom = 36.0
+offset_bottom = 65.0
 
 [node name="InfoBar" parent="." unique_id=774993481 instance=ExtResource("4_jyhfs")]
 custom_minimum_size = Vector2(800, 30)
@@ -37,9 +38,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -400.0
-offset_top = 40.0
+offset_top = 426.0
 offset_right = 400.0
-offset_bottom = 70.0
+offset_bottom = 456.0
 grow_horizontal = 2
 
 [node name="LogViewer" parent="." unique_id=873212913 instance=ExtResource("5_tbgi4")]
@@ -65,5 +66,11 @@ offset_top = 1.0
 offset_right = -1.0
 offset_bottom = 32.0
 grow_horizontal = 0
+
+[node name="GameTimeDisplay" parent="." unique_id=1332994588 instance=ExtResource("10_choun")]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
 
 [editable path="LogViewer"]
