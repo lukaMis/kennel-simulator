@@ -12,6 +12,9 @@ func setup_dog(dog_data: DogResource) -> void:
 	hunger_ui.setup_hunger(dog)
 	energy_ui.setup_energy(dog)
 	button_work.text = dog.name + " Go Fetch"
+	energy_ui.sleep_changed.connect(_on_dog_sleep_changed)
+
+	update_ui() # Run an initial check to disable buttons right away if starting asleep
 
 func update_ui() -> void:
 	if dog:
@@ -47,3 +50,8 @@ func _on_button_work_pressed() -> void:
 	GlobalState.add_money(GameConstants.WORK_PAYOUT)
 	print(dog.name, " successfully fetched items! You earned: ", GameConstants.WORK_PAYOUT)
 	GlobalState.game_info_change(dog.name + " successfully fetched items! You earned: " + str(GameConstants.WORK_PAYOUT))
+
+func _on_dog_sleep_changed(_is_sleeping: bool) -> void:
+	hunger_ui.update_hunger_ui()
+	button_work.disabled = _is_sleeping
+	pass
