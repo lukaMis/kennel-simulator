@@ -1,7 +1,7 @@
 extends Node
 
 var cash: int = GameConstants.STARTING_CASH
-var game_info : String = "Try to look after your dogs as best as you can!"
+var game_info: String = "Try to look after your dogs as best as you can!"
 # NEW: The in-memory buffer tracking all gameplay logs
 var log_history: Array[String] = []
 
@@ -9,6 +9,7 @@ var log_history: Array[String] = []
 signal cash_changed(new_amount: int)
 # A signal that fires whenever something in game changes, so any UI can update automatically!
 signal game_info_update(new_game_info: String)
+
 
 func _ready() -> void:
 	# Clear out any logs from a previous play session by opening with WRITE mode
@@ -19,7 +20,8 @@ func _ready() -> void:
 	# 2. Seed our in-memory array with the session start header
 	log_history.append("=== Simulation Session Started ===")
 
-func try_spend_money(spend_amount:int)-> bool:
+
+func try_spend_money(spend_amount: int) -> bool:
 	if cash >= spend_amount:
 		cash -= spend_amount
 		# Notify the world that cash changed!
@@ -32,11 +34,13 @@ func try_spend_money(spend_amount:int)-> bool:
 	game_info_change("GlobalState: Not enough cash!")
 	return false
 
+
 func add_money(amount: int) -> void:
 	cash += amount
 	cash_changed.emit(cash)
 	print("GlobalState: Earned $", amount, ". Total: $", cash)
 	game_info_change("Earned $" + str(amount) + ". Wallet: $" + str(cash))
+
 
 func game_info_change(new_game_info: String) -> void:
 	game_info = new_game_info
@@ -54,9 +58,11 @@ func game_info_change(new_game_info: String) -> void:
 	if log_history.size() % 15 == 0:
 		save_logs_to_disk()
 
+
 # Called automatically by Godot when the game engine shuts down/closes
 func _exit_tree() -> void:
 	save_logs_to_disk()
+
 
 # Helper function to dump the entire array history to disk
 func save_logs_to_disk() -> void:

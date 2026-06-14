@@ -17,6 +17,7 @@ func _ready() -> void:
 	# Every time the TimeEngine emits an hour_passed signal, tick the dogs.
 	TimeEngine.hour_passed.connect(_on_time_engine_hour_passed)
 
+
 func _spawn_dog(dog_data: DogResource) -> void:
 	# Instantiate a brand new DogUI scene from the template
 	var new_ui = dog_ui_template.instantiate()
@@ -29,6 +30,7 @@ func _spawn_dog(dog_data: DogResource) -> void:
 
 	# Save a reference to this UI so we can call update_ui() on it later
 	active_uis.append(new_ui)
+
 
 func _on_time_engine_hour_passed(_current_hour: int) -> void:
 	# Tick stats for all data files
