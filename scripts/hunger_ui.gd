@@ -11,10 +11,12 @@ func setup_hunger(dog_data: DogResource):
 	progress_display.setup_display(_dog.name + " Hunger: ", _dog.hunger)
 	button_feed.text = "Feed" + " " + _dog.name
 
+
 func update_hunger_ui() -> void:
 	if _dog:
 		progress_display.update_progress_bar(_dog.hunger)
 		button_feed.disabled = _dog.is_sleeping
+
 
 func _on_button_feed_pressed() -> void:
 	if not _dog:

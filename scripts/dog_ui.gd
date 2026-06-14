@@ -1,6 +1,7 @@
 extends Control
 
 var dog: DogResource
+
 @onready var hunger_ui = $VBoxContainer/HungerUI
 @onready var energy_ui = $VBoxContainer/EnergyUI
 @onready var button_work = $VBoxContainer/ButtonWork
@@ -16,6 +17,7 @@ func setup_dog(dog_data: DogResource) -> void:
 
 	update_ui() # Run an initial check to disable buttons right away if starting asleep
 
+
 func update_ui() -> void:
 	if dog:
 		hunger_ui.update_hunger_ui()
@@ -27,9 +29,11 @@ func update_ui() -> void:
 			_force_sleep_switch(true)
 			GlobalState.game_info_change(dog.name + " passed out from exhaustion!")
 
+
 func _force_sleep_switch(is_sleeping: bool) -> void:
 	# Reaches into EnergyUI and forces it to visually flip its CheckButton
 	energy_ui.force_sleep_state(is_sleeping)
+
 
 func _on_button_work_pressed() -> void:
 	if !dog:
@@ -48,10 +52,10 @@ func _on_button_work_pressed() -> void:
 	energy_ui.update_energy_ui()
 	# Reward the player globally!
 	GlobalState.add_money(GameConstants.WORK_PAYOUT)
-	print(dog.name, " successfully fetched items! You earned: ", GameConstants.WORK_PAYOUT)
-	GlobalState.game_info_change(dog.name + " successfully fetched items! You earned: " + str(GameConstants.WORK_PAYOUT))
+	print(dog.name, " fetched! You earned: ", GameConstants.WORK_PAYOUT)
+	GlobalState.game_info_change(dog.name + " fetched! You earned: " + str(GameConstants.WORK_PAYOUT))
+
 
 func _on_dog_sleep_changed(_is_sleeping: bool) -> void:
 	hunger_ui.update_hunger_ui()
 	button_work.disabled = _is_sleeping
-	pass

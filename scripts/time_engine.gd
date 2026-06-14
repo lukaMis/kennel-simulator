@@ -8,7 +8,7 @@ signal time_formatted_updated(time_string: String) # Great for updating a UI clo
 
 # --- TIME VARIABLES ---
 var minute: int = 0
-var hour: int = 8  # Let's start the workday at 8:00 AM
+var hour: int = 8 # Let's start the workday at 8:00 AM
 var day: int = 1
 
 # --- SIMULATION PACING ---
@@ -27,6 +27,7 @@ func _process(delta: float) -> void:
 		_internal_timer -= 60.0
 		_advance_minute()
 
+
 func _advance_minute() -> void:
 	#var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
 	#GlobalState.game_info_change("Current game time:" + " " + time_string)
@@ -38,6 +39,7 @@ func _advance_minute() -> void:
 	minute_passed.emit(minute)
 	_broadcast_formatted_time()
 
+
 func _advance_hour() -> void:
 	hour += 1
 	if hour >= 24:
@@ -48,9 +50,11 @@ func _advance_hour() -> void:
 	#var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
 	#GlobalState.game_info_change("Current game time:" + " " + time_string)
 
+
 func _advance_day() -> void:
 	day += 1
 	day_passed.emit(day)
+
 
 func _broadcast_formatted_time() -> void:
 	# Formats the time into a clean "Day 1 - 08:05" string
