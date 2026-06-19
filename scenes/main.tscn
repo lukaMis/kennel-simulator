@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://b3gui258ct5wp" path="res://scenes/log_viewer.tscn" id="5_tbgi4"]
 [ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="6_trceg"]
 [ext_resource type="PackedScene" uid="uid://73n8b5xknedp" path="res://scenes/game_time_display.tscn" id="10_choun"]
+[ext_resource type="PackedScene" uid="uid://bvlsgluajwywe" path="res://scenes/day_summary_ui.tscn" id="11_ya4ey"]
 
 [node name="Main" type="Node" unique_id=782063]
 script = ExtResource("1_0wfyh")
@@ -72,5 +73,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 50.0
 offset_bottom = 50.0
+
+[node name="DaySummaryUI" parent="." unique_id=1315909635 instance=ExtResource("11_ya4ey")]
 
 [editable path="LogViewer"]
