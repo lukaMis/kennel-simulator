@@ -6,8 +6,10 @@ var base_rent: int = 20
 var food_cost_per_dog: int = 5
 var total_food_cost: int = 0
 
-@onready var breakdown_label: Label = $PanelContainer/MarginContainer/VBoxContainer/BreakdownLabel
-@onready var pay_button: Button = $PanelContainer/MarginContainer/VBoxContainer/PayButton
+#@onready var breakdown_label: Label = $CenterContainer/MarginContainer/VBoxContainer/BreakdownLabel
+#@onready var pay_button: Button = $CenterContainer/MarginContainer/VBoxContainer/PayButton
+@onready var breakdown_label: RichTextLabel = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/BreakdownLabel
+@onready var pay_button: Button = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/PayButton
 
 
 func _ready() -> void:
