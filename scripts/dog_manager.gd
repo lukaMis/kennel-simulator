@@ -24,7 +24,7 @@ func wake_and_rest_all_dogs() -> void:
 	for dog in array_of_dogs:
 		dog.wake_and_rest_dog()
 
-		# Update visual bars for all UIs
+	# Update visual bars for all UIs
 	for ui in active_uis:
 		ui.update_ui()
 	pass
