@@ -9,17 +9,9 @@ extends Node
 func _ready() -> void:
 	# Tune into the time engine's daily broadcast
 	TimeEngine.day_passed.connect(_on_day_passed)
-	# Listen for morning
-	TimeEngine.morning_started.connect(_on_morning_started)
 
 
 func _on_day_passed(current_day: int) -> void:
 	var active_dog_count: int = dog_manager.array_of_dogs.size()
 	# Trigger the phase shift
 	day_summary_ui.trigger_summary(current_day, active_dog_count)
-
-
-# NEW: Handles morning initialization for kennel entities
-func _on_morning_started() -> void:
-	dog_manager.wake_and_rest_all_dogs()
-	pass

@@ -5,6 +5,7 @@ extends Node
 const STARTING_CASH: int = 22
 const FOOD_COST: int = 5
 const WORK_PAYOUT: int = 15
+const BASE_RENT: int = 5
 # --- Dogs Constants ---
 const WORK_ENERGY_COST: int = 20
 const SLEEP_ENERGY_GAIN: int = 10
