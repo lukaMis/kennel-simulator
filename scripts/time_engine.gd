@@ -4,6 +4,7 @@ extends Node
 signal minute_passed(current_minute: int)
 signal hour_passed(current_hour: int)
 signal day_passed(current_day: int)
+signal morning_started # NEW: Fires exactly when the new workday begins!
 signal time_formatted_updated(time_string: String) # Great for updating a UI clock instantly
 
 # --- SIMULATION PACING ---
@@ -41,6 +42,7 @@ func start_morning() -> void:
 	minute = 0
 	_internal_timer = 0.0
 	_broadcast_formatted_time()
+	morning_started.emit() # NEW: Tell the game world it's time to wake up!
 
 
 func _advance_minute() -> void:

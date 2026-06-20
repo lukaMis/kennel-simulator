@@ -16,3 +16,9 @@ func tick_stats():
 	else:
 		energy = max(energy - energy_drain_rate, 0)
 		hunger = max(hunger - hunger_drain_rate, 0)
+
+
+func wake_and_rest_dog() -> void:
+	is_sleeping = false
+	energy = 100
+	pass

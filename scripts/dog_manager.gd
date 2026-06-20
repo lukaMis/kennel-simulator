@@ -16,6 +16,18 @@ func _ready() -> void:
 	# NEW: Tune into the cosmic broadcast!
 	# Every time the TimeEngine emits an hour_passed signal, tick the dogs.
 	TimeEngine.hour_passed.connect(_on_time_engine_hour_passed)
+	# Listen directly to the TimeEngine for the morning whistle
+	TimeEngine.morning_started.connect(wake_and_rest_all_dogs)
+
+
+func wake_and_rest_all_dogs() -> void:
+	for dog in array_of_dogs:
+		dog.wake_and_rest_dog()
+
+		# Update visual bars for all UIs
+	for ui in active_uis:
+		ui.update_ui()
+	pass
 
 
 func _spawn_dog(dog_data: DogResource) -> void:
