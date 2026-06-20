@@ -36,6 +36,13 @@ func _process(delta: float) -> void:
 		_advance_minute()
 
 
+func start_morning() -> void:
+	hour = 8
+	minute = 0
+	_internal_timer = 0.0
+	_broadcast_formatted_time()
+
+
 func _advance_minute() -> void:
 	#var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
 	#GlobalState.game_info_change("Current game time:" + " " + time_string)
@@ -68,7 +75,6 @@ func _broadcast_formatted_time() -> void:
 	# Formats the time into a clean "Day 1 - 08:05" string
 	var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
 	time_formatted_updated.emit(time_string)
-	#GlobalState.game_info_change("Current game time:" + " " + time_string)
 
 
 func _on_game_running_state(game_is_running: bool) -> void:
