@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://ducgn8p15ewwv"]
+
+[ext_resource type="Script" uid="uid://bmct0kdb3xuuh" path="res://scripts/customs_staging_modal.gd" id="1_4b2yv"]
+
+[node name="CustomsStagingModal" type="ColorRect" unique_id=1030715036]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.53333336)
+script = ExtResource("1_4b2yv")
+
+[node name="ModalPanel" type="Panel" parent="." unique_id=481242647]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ModalPanel" unique_id=1557176582]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalPanel/MarginContainer" unique_id=107097897]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=365249256]
+layout_mode = 2
+text = "Customs Border Contract"
+
+[node name="HSeparator" type="HSeparator" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=8380501]
+layout_mode = 2
+
+[node name="ContentSplit" type="HBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=64468025]
+layout_mode = 2
+
+[node name="LeftColumn" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit" unique_id=1950561516]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RosterLabel" type="Label" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn" unique_id=16970869]
+layout_mode = 2
+text = "Available Dogs"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn" unique_id=1715716334]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RosterList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/ScrollContainer" unique_id=962234618]
+layout_mode = 2
+
+[node name="RightColumn" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit" unique_id=298975624]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TeamLabel" type="Label" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn" unique_id=1243913869]
+layout_mode = 2
+text = "Inspection Team (Max 2)"
+
+[node name="TeamList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn" unique_id=175682579]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=1550351497]
+layout_mode = 2
+
+[node name="ButtonRow" type="HBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=281579212]
+layout_mode = 2
+alignment = 1
+
+[node name="ButtonCancel" type="Button" parent="ModalPanel/MarginContainer/VBoxContainer/ButtonRow" unique_id=851541537]
+layout_mode = 2
+text = "Cancel"
+
+[node name="ButtonStart" type="Button" parent="ModalPanel/MarginContainer/VBoxContainer/ButtonRow" unique_id=1843173893]
+layout_mode = 2
+disabled = true
+text = "Start Shift"
