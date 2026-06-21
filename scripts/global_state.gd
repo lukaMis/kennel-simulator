@@ -11,6 +11,15 @@ var game_info: String = "Try to look after your dogs as best as you can!"
 # NEW: The in-memory buffer tracking all gameplay logs
 var log_history: Array[String] = []
 var game_is_running: bool = true
+#
+# --- Active Shift Data Bridge ---
+# Holds the specific dogs the player selected in the UI modal
+var active_shift_roster: Array[DogResource] = []
+# Holds the mathematical sequence of packages generated before the shift starts
+var shift_cargo_queue: Array[Dictionary] = []
+# Tracks the shifting financial value of the contract
+var shift_current_payout: int = 0
+var shift_quota: int = 0
 
 
 func _ready() -> void:
@@ -80,3 +89,11 @@ func set_game_running(running: bool) -> void:
 	if game_is_running != running:
 		game_is_running = running
 		run_state_changed.emit(game_is_running) # Passing the payload!
+
+
+# Call this right before generating a new shift to prevent old data from bleeding over!
+func clear_shift_data() -> void:
+	active_shift_roster.clear()
+	shift_cargo_queue.clear()
+	shift_current_payout = 0
+	shift_quota = 0
