@@ -6,14 +6,10 @@ signal cash_changed(new_amount: int)
 signal game_info_update(new_game_info: String)
 signal run_state_changed(game_is_running: bool)
 
-# The master list of all dogs you own. This survives all scene changes!
-#var master_dog_roster: Array[DogResource] = []
-#@export var master_dog_roster: Array[DogResource] = []
-#
 # This creates the slot in the Inspector for you to drag and drop your files
 @export var starting_dogs: Array[DogResource] = []
 
-#
+# The master list of all dogs you own. This survives all scene changes!
 # This remains your working list that survives scene changes
 var master_dog_roster: Array[DogResource] = []
 #
@@ -104,7 +100,7 @@ func save_logs_to_disk() -> void:
 func set_game_running(running: bool) -> void:
 	if game_is_running != running:
 		game_is_running = running
-		run_state_changed.emit(game_is_running) # Passing the payload!
+		run_state_changed.emit(game_is_running)
 
 
 # Call this right before generating a new shift to prevent old data from bleeding over!

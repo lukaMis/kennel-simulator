@@ -42,12 +42,17 @@ func start_morning() -> void:
 	minute = 0
 	_internal_timer = 0.0
 	_broadcast_formatted_time()
-	morning_started.emit() # NEW: Tell the game world it's time to wake up!
+	# Tell the game world it's time to wake up
+	morning_started.emit()
+
+
+func stop_time_engine() -> void:
+	_time_is_ticking = false
+	TimeEngine.process_mode = Node.PROCESS_MODE_DISABLED
+	pass
 
 
 func _advance_minute() -> void:
-	#var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
-	#GlobalState.game_info_change("Current game time:" + " " + time_string)
 	minute += 1
 	if minute >= 60:
 		minute = 0
@@ -64,8 +69,6 @@ func _advance_hour() -> void:
 		_advance_day()
 
 	hour_passed.emit(hour)
-	#var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
-	#GlobalState.game_info_change("Current game time:" + " " + time_string)
 
 
 func _advance_day() -> void:
@@ -81,3 +84,8 @@ func _broadcast_formatted_time() -> void:
 
 func _on_game_running_state(game_is_running: bool) -> void:
 	_time_is_ticking = game_is_running
+	#stop game engine to run _process() if gaame is not running
+	if game_is_running:
+		process_mode = Node.PROCESS_MODE_INHERIT
+	else:
+		process_mode = Node.PROCESS_MODE_DISABLED

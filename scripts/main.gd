@@ -17,17 +17,10 @@ func _ready() -> void:
 
 
 func _on_day_passed(current_day: int) -> void:
-	#var active_dog_count: int = dog_manager.array_of_dogs.size()
 	var active_dog_count: int = GlobalState.master_dog_roster.size()
 	# Trigger the phase shift
 	day_summary_ui.trigger_summary(current_day, active_dog_count)
 
 
 func _on_work_button_pressed() -> void:
-	#staging_modal.show()
-	#staging_modal.open_modal()
-	# 1. Open the modal
-	staging_modal.show()
-	# 2. Force it to refresh its content
-	staging_modal._populate_roster(GlobalState.master_dog_roster)
-	pass
+	staging_modal.open_modal()

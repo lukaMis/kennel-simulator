@@ -4,9 +4,6 @@ const MAX_TEAM_SIZE: int = 2
 
 var selected_team: Array[DogResource] = []
 
-# Adjust this path based on where you store your player's dogs in the kennel scene
-# For this example, assuming there is a DogManager autoload or node
-# var all_owned_dogs: Array[DogResource] = DogManager.get_all_dogs()
 @onready var roster_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer/ScrollContainer/RosterList
 @onready var team_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn/VBoxContainer/TeamList
 @onready var button_start: Button = $ModalPanel/MarginContainer/VBoxContainer/ButtonRow/ButtonStart
@@ -22,33 +19,25 @@ func _ready() -> void:
 
 
 # Call this from your Main scene when the player clicks the "Work" button
-#func open_modal(dogs: Array[DogResource]) -> void:
 func open_modal() -> void:
-	show()
+	# 1. Freeze the game state immediately
+	GlobalState.set_game_running(false)
+
 	selected_team.clear()
-	#_populate_roster(dogs)
+
 	_populate_roster(GlobalState.master_dog_roster)
 	_update_ui()
 
+	show()
+
 
 func _populate_roster(dogs: Array[DogResource]) -> void:
-	print("DEBUG: _populate_roster running. Creating Buttons.") # <--- ADD THIS
-	# Debug: Print how many dogs are in the array
-	print("Populating roster with ", dogs.size(), " dogs.")
-	print("I am adding buttons to: ", roster_list.get_path())
-	#return
-	# Clear old UI children
 	for child in roster_list.get_children():
 		child.queue_free()
 
 	for dog in dogs:
 		var btn = Button.new()
-		#btn.text = "%s (Energy: %d)" % [dog.dog_name, dog.energy]
 		btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
-
-		# ADD THESE THREE LINES:
-		#btn.custom_minimum_size = Vector2(0, 40) # Ensure they have height
-		#btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL # Force horizontal width
 
 		# Stat Validation: Lock out exhausted or sleeping dogs
 		if dog.energy < 20.0 or dog.is_sleeping:
@@ -82,6 +71,8 @@ func _update_ui() -> void:
 
 
 func _on_cancel_pressed() -> void:
+	# 2. Unfreeze the game if they back out!
+	GlobalState.set_game_running(true)
 	hide()
 
 
@@ -92,17 +83,14 @@ func _on_start_pressed() -> void:
 	# 2. Push the selected team to the global courier
 	GlobalState.active_shift_roster = selected_team.duplicate()
 
-	# 3. Call the generation logic (Phase 3 - to be implemented)
+	# 3. Call the generation logic
 	_generate_cargo_queue()
 
-	# 4. Halt time and swap scenes (Phase 4)
-	# 4. Halt the TimeEngine clock by setting its internal running boolean flag to false
-	GlobalState.game_is_running = false
-	TimeEngine.process_mode = Node.PROCESS_MODE_DISABLED
-	#get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
+	# 4. Hide the modal (Time is already paused from open_modal!)
+	hide()
+	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
 
 
-# Placeholder for Phase 3
 func _generate_cargo_queue() -> void:
 	print("Generating cargo queue based on GameConstants...")
 	# Clean slate safety check
@@ -133,4 +121,3 @@ func _generate_cargo_queue() -> void:
 		GlobalState.shift_cargo_queue.append(package)
 
 	print("Successfully generated cargo queue. Total items: ", GlobalState.shift_cargo_queue.size())
-	# Math will go here
