@@ -1,17 +1,33 @@
 extends Node
 
 @onready var dog_manager = $DogManager
-@onready var cash_ui = $CashUI
-@onready var info_bar = $InfoBar
-@onready var day_summary_ui: Control = $DaySummaryUI
+@onready var cash_ui = $UILayer/CashUI
+@onready var info_bar = $UILayer/InfoBar
+@onready var day_summary_ui: Control = $UILayer/DaySummaryUI
+@onready var staging_modal: ColorRect = $UILayer/CustomsStagingModal
+@onready var work_button: Button = $UILayer/WorkButton
 
 
 func _ready() -> void:
 	# Tune into the time engine's daily broadcast
 	TimeEngine.day_passed.connect(_on_day_passed)
 
+	# 1. Connect the new work button!
+	work_button.pressed.connect(_on_work_button_pressed)
+
 
 func _on_day_passed(current_day: int) -> void:
-	var active_dog_count: int = dog_manager.array_of_dogs.size()
+	#var active_dog_count: int = dog_manager.array_of_dogs.size()
+	var active_dog_count: int = GlobalState.master_dog_roster.size()
 	# Trigger the phase shift
 	day_summary_ui.trigger_summary(current_day, active_dog_count)
+
+
+func _on_work_button_pressed() -> void:
+	#staging_modal.show()
+	#staging_modal.open_modal()
+	# 1. Open the modal
+	staging_modal.show()
+	# 2. Force it to refresh its content
+	staging_modal._populate_roster(GlobalState.master_dog_roster)
+	pass

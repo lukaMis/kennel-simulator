@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b0gvtb73beosj"]
+
+[ext_resource type="Script" uid="uid://drq0il4l50c1d" path="res://scripts/global_state.gd" id="1_nvx4l"]
+[ext_resource type="Script" uid="uid://om7m07qj2rid" path="res://scripts/dog_resource.gd" id="2_6crnw"]
+[ext_resource type="Resource" uid="uid://d16mksddef2hp" path="res://dogs/dog_pika.tres" id="3_dvsu2"]
+[ext_resource type="Resource" uid="uid://cvejnhg2jd3n7" path="res://dogs/dog_ron.tres" id="4_m3iqb"]
+[ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="5_sb3tv"]
+
+[node name="GlobalState" type="Node" unique_id=1243156716]
+script = ExtResource("1_nvx4l")
+starting_dogs = Array[ExtResource("2_6crnw")]([ExtResource("3_dvsu2"), ExtResource("4_m3iqb"), ExtResource("5_sb3tv")])

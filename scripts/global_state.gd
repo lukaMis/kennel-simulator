@@ -6,6 +6,17 @@ signal cash_changed(new_amount: int)
 signal game_info_update(new_game_info: String)
 signal run_state_changed(game_is_running: bool)
 
+# The master list of all dogs you own. This survives all scene changes!
+#var master_dog_roster: Array[DogResource] = []
+#@export var master_dog_roster: Array[DogResource] = []
+#
+# This creates the slot in the Inspector for you to drag and drop your files
+@export var starting_dogs: Array[DogResource] = []
+
+#
+# This remains your working list that survives scene changes
+var master_dog_roster: Array[DogResource] = []
+#
 var cash: int = GameConstants.STARTING_CASH
 var game_info: String = "Try to look after your dogs as best as you can!"
 # NEW: The in-memory buffer tracking all gameplay logs
@@ -23,6 +34,11 @@ var shift_quota: int = 0
 
 
 func _ready() -> void:
+	# Duplicate the exported array into your master roster.
+	# We use .duplicate() so if dogs gain/lose energy, it doesn't accidentally
+	# overwrite your default resource files in the editor!
+	master_dog_roster = starting_dogs.duplicate()
+
 	# Clear out any logs from a previous play session by opening with WRITE mode
 	var file = FileAccess.open(GameConstants.LOG_FILE_PATH, FileAccess.WRITE)
 	if file:

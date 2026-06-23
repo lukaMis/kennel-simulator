@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalState="*uid://drq0il4l50c1d"
+GlobalState="*uid://b0gvtb73beosj"
 TimeEngine="*uid://3j34aeiqdyq"
 
 [display]

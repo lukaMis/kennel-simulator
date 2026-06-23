@@ -64,7 +64,9 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="RosterList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/ScrollContainer" unique_id=962234618]
+custom_minimum_size = Vector2(175, 200)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="RightColumn" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit" unique_id=298975624]
 layout_mode = 2

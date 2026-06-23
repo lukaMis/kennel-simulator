@@ -22,21 +22,29 @@ func _ready() -> void:
 
 
 # Call this from your Main scene when the player clicks the "Work" button
-func open_modal(dogs: Array[DogResource]) -> void:
+#func open_modal(dogs: Array[DogResource]) -> void:
+func open_modal() -> void:
 	show()
 	selected_team.clear()
-	_populate_roster(dogs)
+	#_populate_roster(dogs)
+	_populate_roster(GlobalState.master_dog_roster)
 	_update_ui()
 
 
 func _populate_roster(dogs: Array[DogResource]) -> void:
+	print("DEBUG: _populate_roster running. Creating Buttons.") # <--- ADD THIS
+	# Debug: Print how many dogs are in the array
+	print("Populating roster with ", dogs.size(), " dogs.")
+	print("I am adding buttons to: ", roster_list.get_path())
+	#return
 	# Clear old UI children
 	for child in roster_list.get_children():
 		child.queue_free()
 
 	for dog in dogs:
 		var btn = Button.new()
-		btn.text = "%s (Energy: %d)" % [dog.dog_name, dog.energy]
+		#btn.text = "%s (Energy: %d)" % [dog.dog_name, dog.energy]
+		btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
 
 		# Stat Validation: Lock out exhausted or sleeping dogs
 		if dog.energy < 20.0 or dog.is_sleeping:
@@ -84,11 +92,41 @@ func _on_start_pressed() -> void:
 	_generate_cargo_queue()
 
 	# 4. Halt time and swap scenes (Phase 4)
+	# 4. Halt the TimeEngine clock by setting its internal running boolean flag to false
+	GlobalState.game_is_running = false
 	TimeEngine.process_mode = Node.PROCESS_MODE_DISABLED
-	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
+	#get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
 
 
 # Placeholder for Phase 3
 func _generate_cargo_queue() -> void:
 	print("Generating cargo queue based on GameConstants...")
+	# Clean slate safety check
+	GlobalState.shift_cargo_queue.clear()
+
+	# Set the quota and base payout for the contract from our constants
+	GlobalState.shift_quota = GameConstants.CUSTOMS_QUOTA
+	GlobalState.shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
+
+	# Loop through our required quota count to build individual packages
+	for i in range(GameConstants.CUSTOMS_QUOTA):
+		var package: Dictionary = {
+			"is_contraband": false,
+			"contraband_type": "Safe",
+			"visual_sprite_id": randi_range(1, 4), # Picks a random box layout
+		}
+		# Roll against our 30% contraband constant
+		if randf() < GameConstants.CUSTOMS_CONTRABAND_CHANCE:
+			package["is_contraband"] = true
+
+			# Roll a 50/50 split on whether the contraband is Organic or Mineral
+			if randf() < 0.5:
+				package["contraband_type"] = "Organic"
+			else:
+				package["contraband_type"] = "Mineral"
+
+		# Push our finished data packet into the global array bridge
+		GlobalState.shift_cargo_queue.append(package)
+
+	print("Successfully generated cargo queue. Total items: ", GlobalState.shift_cargo_queue.size())
 	# Math will go here

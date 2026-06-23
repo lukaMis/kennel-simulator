@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-@export var array_of_dogs: Array[DogResource] = []
+#@export var array_of_dogs: Array[DogResource] = []
 @export var dog_ui_template: PackedScene
 
 # Keep an internal list of the UI nodes we spawn so we can update them later
@@ -9,9 +9,17 @@ var active_uis: Array[Control] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#var _my_dogs = GlobalState.master_dog_roster
 	# 2. Loop through the array and build the kennel automatically
-	for dog_data in array_of_dogs:
-		_spawn_dog(dog_data)
+	#for dog_data in array_of_dogs:
+	#_spawn_dog(dog_data)
+	#for dog_data in _my_dogs:
+	#_spawn_dog(dog_data)
+
+	# Loop directly over the Autoload array to build the kennel
+	for dog_data in GlobalState.master_dog_roster:
+		#_spawn_dog(dog_data)
+		pass
 
 	# NEW: Tune into the cosmic broadcast!
 	# Every time the TimeEngine emits an hour_passed signal, tick the dogs.
@@ -21,7 +29,11 @@ func _ready() -> void:
 
 
 func wake_and_rest_all_dogs() -> void:
-	for dog in array_of_dogs:
+	#for dog in array_of_dogs:
+	#dog.wake_and_rest_dog()
+
+	# Call the Autoload directly
+	for dog in GlobalState.master_dog_roster:
 		dog.wake_and_rest_dog()
 
 	# Update visual bars for all UIs
@@ -31,6 +43,7 @@ func wake_and_rest_all_dogs() -> void:
 
 
 func _spawn_dog(dog_data: DogResource) -> void:
+	print("DEBUG: _spawn_dog running. Creating TextureRects from template.") # <--- ADD THIS
 	# Instantiate a brand new DogUI scene from the template
 	var new_ui = dog_ui_template.instantiate()
 
@@ -46,7 +59,10 @@ func _spawn_dog(dog_data: DogResource) -> void:
 
 func _on_time_engine_hour_passed(_current_hour: int) -> void:
 	# Tick stats for all data files
-	for dog_data in array_of_dogs:
+	#for dog_data in array_of_dogs:
+	#dog_data.tick_stats()
+	# Tick stats for all data files directly in the Autoload
+	for dog_data in GlobalState.master_dog_roster:
 		dog_data.tick_stats()
 
 		# Optional: Keep the console prints for debugging!

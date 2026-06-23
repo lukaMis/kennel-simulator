@@ -2,15 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dejq8rjpnnwa3" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://dh6w5q0wd3m03" path="res://scenes/dog_manager.tscn" id="2_tefeu"]
-[ext_resource type="Script" uid="uid://om7m07qj2rid" path="res://scripts/dog_resource.gd" id="3_choun"]
 [ext_resource type="PackedScene" uid="uid://bnwrn0w4t3egl" path="res://scenes/cash_ui.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://cy3ai5s8u0ecj" path="res://scenes/info_bar.tscn" id="4_jyhfs"]
-[ext_resource type="Resource" uid="uid://d16mksddef2hp" path="res://dogs/dog_pika.tres" id="4_ya4ey"]
-[ext_resource type="Resource" uid="uid://cvejnhg2jd3n7" path="res://dogs/dog_ron.tres" id="5_eb6dy"]
 [ext_resource type="PackedScene" uid="uid://b3gui258ct5wp" path="res://scenes/log_viewer.tscn" id="5_tbgi4"]
-[ext_resource type="Resource" uid="uid://dmifi8ebbyes0" path="res://dogs/dog_rex.tres" id="6_trceg"]
 [ext_resource type="PackedScene" uid="uid://73n8b5xknedp" path="res://scenes/game_time_display.tscn" id="10_choun"]
 [ext_resource type="PackedScene" uid="uid://bvlsgluajwywe" path="res://scenes/day_summary_ui.tscn" id="11_ya4ey"]
+[ext_resource type="PackedScene" uid="uid://ducgn8p15ewwv" path="res://scenes/customs_staging_modal.tscn" id="12_trceg"]
 
 [node name="Main" type="Node" unique_id=782063]
 script = ExtResource("1_0wfyh")
@@ -25,15 +22,16 @@ offset_right = 20.0
 offset_bottom = 140.0
 grow_horizontal = 2
 alignment = 1
-array_of_dogs = Array[ExtResource("3_choun")]([ExtResource("4_ya4ey"), ExtResource("5_eb6dy"), ExtResource("6_trceg")])
 
-[node name="CashUI" parent="." unique_id=214257894 instance=ExtResource("3_sugp2")]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1354526797]
+
+[node name="CashUI" parent="UILayer" unique_id=214257894 instance=ExtResource("3_sugp2")]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 170.0
 offset_bottom = 65.0
 
-[node name="InfoBar" parent="." unique_id=774993481 instance=ExtResource("4_jyhfs")]
+[node name="InfoBar" parent="UILayer" unique_id=774993481 instance=ExtResource("4_jyhfs")]
 custom_minimum_size = Vector2(800, 30)
 anchors_preset = 5
 anchor_left = 0.5
@@ -44,7 +42,7 @@ offset_right = 400.0
 offset_bottom = 456.0
 grow_horizontal = 2
 
-[node name="LogViewer" parent="." unique_id=873212913 instance=ExtResource("5_tbgi4")]
+[node name="LogViewer" parent="UILayer" unique_id=873212913 instance=ExtResource("5_tbgi4")]
 anchors_preset = 15
 anchor_left = 0.0
 anchor_top = 0.0
@@ -52,13 +50,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="ModalPanel" parent="LogViewer" index="0" unique_id=1728552694]
+[node name="ModalPanel" parent="UILayer/LogViewer" index="0" unique_id=1728552694]
 offset_right = 250.0
 
-[node name="VBoxContainer" parent="LogViewer/ModalPanel" index="0" unique_id=1486800141]
+[node name="VBoxContainer" parent="UILayer/LogViewer/ModalPanel" index="0" unique_id=1486800141]
 theme_override_constants/separation = 10
 
-[node name="ButtonLogOpen" parent="LogViewer" index="1" unique_id=1471355034]
+[node name="ButtonLogOpen" parent="UILayer/LogViewer" index="1" unique_id=1471355034]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -68,12 +66,23 @@ offset_right = -1.0
 offset_bottom = 32.0
 grow_horizontal = 0
 
-[node name="GameTimeDisplay" parent="." unique_id=1332994588 instance=ExtResource("10_choun")]
+[node name="GameTimeDisplay" parent="UILayer" unique_id=1332994588 instance=ExtResource("10_choun")]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 50.0
 offset_bottom = 50.0
 
-[node name="DaySummaryUI" parent="." unique_id=1315909635 instance=ExtResource("11_ya4ey")]
+[node name="DaySummaryUI" parent="UILayer" unique_id=1315909635 instance=ExtResource("11_ya4ey")]
 
-[editable path="LogViewer"]
+[node name="WorkButton" type="Button" parent="UILayer" unique_id=641046562]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -31.0
+offset_right = 155.0
+grow_vertical = 0
+text = "Send dogs to work!"
+
+[node name="CustomsStagingModal" parent="UILayer" unique_id=1030715036 instance=ExtResource("12_trceg")]
+
+[editable path="UILayer/LogViewer"]
