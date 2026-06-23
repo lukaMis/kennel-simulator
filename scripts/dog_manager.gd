@@ -18,7 +18,7 @@ func _ready() -> void:
 
 	# Loop directly over the Autoload array to build the kennel
 	for dog_data in GlobalState.master_dog_roster:
-		#_spawn_dog(dog_data)
+		_spawn_dog(dog_data)
 		pass
 
 	# NEW: Tune into the cosmic broadcast!

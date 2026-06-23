@@ -7,7 +7,7 @@ var selected_team: Array[DogResource] = []
 # Adjust this path based on where you store your player's dogs in the kennel scene
 # For this example, assuming there is a DogManager autoload or node
 # var all_owned_dogs: Array[DogResource] = DogManager.get_all_dogs()
-@onready var roster_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/ScrollContainer/RosterList
+@onready var roster_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer/ScrollContainer/RosterList
 @onready var team_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn/TeamList
 @onready var button_start: Button = $ModalPanel/MarginContainer/VBoxContainer/ButtonRow/ButtonStart
 @onready var button_cancel: Button = $ModalPanel/MarginContainer/VBoxContainer/ButtonRow/ButtonCancel
@@ -46,6 +46,10 @@ func _populate_roster(dogs: Array[DogResource]) -> void:
 		#btn.text = "%s (Energy: %d)" % [dog.dog_name, dog.energy]
 		btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
 
+		# ADD THESE THREE LINES:
+		btn.custom_minimum_size = Vector2(0, 40) # Ensure they have height
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL # Force horizontal width
+
 		# Stat Validation: Lock out exhausted or sleeping dogs
 		if dog.energy < 20.0 or dog.is_sleeping:
 			btn.disabled = true
@@ -70,7 +74,7 @@ func _update_ui() -> void:
 
 	for dog in selected_team:
 		var lbl = Label.new()
-		lbl.text = "- %s" % dog.dog_name
+		lbl.text = "- %s" % dog.name
 		team_list.add_child(lbl)
 
 	# Enable the Start button only if at least 1 dog is selected

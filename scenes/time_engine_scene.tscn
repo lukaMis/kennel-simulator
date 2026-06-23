@@ -4,4 +4,4 @@
 
 [node name="TimeEngineScene" type="Node" unique_id=1530070152]
 script = ExtResource("1_okkis")
-time_multiplier = 6000.0
+time_multiplier = 600.0

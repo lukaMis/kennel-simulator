@@ -46,26 +46,31 @@ layout_mode = 2
 text = "Customs Border Contract"
 
 [node name="HSeparator" type="HSeparator" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=8380501]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="ContentSplit" type="HBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=64468025]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="LeftColumn" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit" unique_id=1950561516]
+[node name="LeftColumn" type="PanelContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit" unique_id=1957942644]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RosterLabel" type="Label" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn" unique_id=16970869]
+[node name="VBoxContainer" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn" unique_id=1755499995]
+layout_mode = 2
+
+[node name="RosterLabel" type="Label" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer" unique_id=16970869]
 layout_mode = 2
 text = "Available Dogs"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn" unique_id=1715716334]
+[node name="ScrollContainer" type="ScrollContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer" unique_id=1715716334]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RosterList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/ScrollContainer" unique_id=962234618]
-custom_minimum_size = Vector2(175, 200)
+[node name="RosterList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer/ScrollContainer" unique_id=962234618]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="RightColumn" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit" unique_id=298975624]
@@ -78,8 +83,10 @@ text = "Inspection Team (Max 2)"
 
 [node name="TeamList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn" unique_id=175682579]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="HSeparator2" type="HSeparator" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=1550351497]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="ButtonRow" type="HBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer" unique_id=281579212]
