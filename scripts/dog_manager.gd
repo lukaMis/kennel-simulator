@@ -11,7 +11,6 @@ func _ready() -> void:
 	# Loop directly over the Autoload array to build the kennel
 	for dog_data in GlobalState.master_dog_roster:
 		_spawn_dog(dog_data)
-		pass
 
 	# Every time the TimeEngine emits an hour_passed signal, tick the dogs.
 	TimeEngine.hour_passed.connect(_on_time_engine_hour_passed)

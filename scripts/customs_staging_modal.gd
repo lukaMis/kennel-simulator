@@ -37,9 +37,6 @@ func _on_cancel_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
-	# freeze time
-	GlobalState.set_game_running(false)
-
 	# 1. Hand the selected team over to the manager and let it handle the rest
 	CustomsInspectionManager.start_shift(selected_team)
 

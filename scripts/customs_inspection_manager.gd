@@ -8,8 +8,6 @@ var shift_quota: int = GameConstants.CUSTOMS_QUOTA
 
 # The UI modal passes the team directly into this function
 func start_shift(team: Array[DogResource]) -> void:
-	active_shift_roster.clear()
-
 	# 1. Store the shallow clone of the working dogs
 	active_shift_roster = team.duplicate()
 
