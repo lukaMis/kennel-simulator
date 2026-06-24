@@ -23,6 +23,7 @@ func start_shift(team: Array[DogResource]) -> void:
 
 func stop_shift() -> void:
 	# placeholder for end of shift cleanup
+	_clear_shift()
 	shift_ended.emit()
 	print("Shift has ended")
 	pass
@@ -49,3 +50,12 @@ func _generate_shift_queue() -> void:
 		active_queue.append(package)
 
 	print("CustomsCargoManager: Successfully generated ", active_queue.size(), " items.")
+
+
+func _clear_shift() -> void:
+	active_shift_roster.clear()
+	active_queue.clear()
+	# Reset payout/quota to baseline
+	shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
+	shift_quota = GameConstants.CUSTOMS_QUOTA
+	print("CustomsInspectionManager: Shift cleaned up.")
