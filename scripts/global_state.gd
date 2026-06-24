@@ -18,15 +18,6 @@ var game_info: String = "Try to look after your dogs as best as you can!"
 # NEW: The in-memory buffer tracking all gameplay logs
 var log_history: Array[String] = []
 var game_is_running: bool = true
-#
-# --- Active Shift Data Bridge ---
-# Holds the specific dogs the player selected in the UI modal
-var active_shift_roster: Array[DogResource] = []
-# Holds the mathematical sequence of packages generated before the shift starts
-var shift_cargo_queue: Array[CargoPackage] = []
-# Tracks the shifting financial value of the contract
-var shift_current_payout: int = 0
-var shift_quota: int = 0
 
 
 func _ready() -> void:
@@ -56,11 +47,12 @@ func _exit_tree() -> void:
 func try_spend_money(spend_amount: int) -> bool:
 	if cash >= spend_amount:
 		cash -= spend_amount
+
+		game_info_change("Spent $" + str(spend_amount) + ". Wallet: $" + str(cash))
 		# Notify the world that cash changed!
 		cash_changed.emit(cash)
 		print("GlobalState.cash: ", cash)
-		#game_info_change("GlobalState.cash: " + str(cash))
-		game_info_change("Spent $" + str(spend_amount) + ". Wallet: $" + str(cash))
+
 		return true
 	print("GlobalState: Not enough cash!")
 	game_info_change("GlobalState: Not enough cash!")
@@ -105,17 +97,3 @@ func set_game_running(running: bool) -> void:
 	if game_is_running != running:
 		game_is_running = running
 		run_state_changed.emit(game_is_running)
-
-
-# Call this right before generating a new shift to prevent old data from bleeding over!
-func clear_shift_data() -> void:
-	active_shift_roster.clear()
-	shift_cargo_queue.clear()
-	shift_current_payout = 0
-	shift_quota = 0
-
-
-class CargoPackage extends RefCounted:
-	var is_contraband: bool = false
-	var contraband_type: String = "Safe"
-	var visual_sprite_id: int = 1

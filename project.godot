@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GlobalState="*uid://b0gvtb73beosj"
 TimeEngine="*uid://3j34aeiqdyq"
+CustomsInspectionManager="*uid://bbwtgkp0n42yk"
 
 [display]
 

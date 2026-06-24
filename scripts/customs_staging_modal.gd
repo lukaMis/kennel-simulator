@@ -27,8 +27,27 @@ func open_modal() -> void:
 
 	_populate_roster(GlobalState.master_dog_roster)
 	_update_ui()
-
 	show()
+
+
+func _on_cancel_pressed() -> void:
+	# 2. Unfreeze the game if they back out!
+	GlobalState.set_game_running(true)
+	hide()
+
+
+func _on_start_pressed() -> void:
+	# freeze time
+	GlobalState.set_game_running(false)
+
+	# 1. Hand the selected team over to the manager and let it handle the rest
+	CustomsInspectionManager.start_shift(selected_team)
+
+	# 2. Hide the modal
+	hide()
+
+	# 3. Swap to the minigame scene
+	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
 
 
 func _populate_roster(dogs: Array[DogResource]) -> void:
@@ -50,12 +69,6 @@ func _populate_roster(dogs: Array[DogResource]) -> void:
 		roster_list.add_child(btn)
 
 
-func _on_roster_dog_selected(dog: DogResource) -> void:
-	if selected_team.size() < MAX_TEAM_SIZE and not selected_team.has(dog):
-		selected_team.append(dog)
-		_update_ui()
-
-
 func _update_ui() -> void:
 	# Update the right column (Selected Team)
 	for child in team_list.get_children():
@@ -70,53 +83,7 @@ func _update_ui() -> void:
 	button_start.disabled = selected_team.is_empty()
 
 
-func _on_cancel_pressed() -> void:
-	# 2. Unfreeze the game if they back out!
-	GlobalState.set_game_running(true)
-	hide()
-
-
-func _on_start_pressed() -> void:
-	# 1. Clear old data from the bridge
-	GlobalState.clear_shift_data()
-
-	# 2. Push the selected team to the global courier
-	GlobalState.active_shift_roster = selected_team.duplicate()
-
-	# 3. Call the generation logic
-	_generate_cargo_queue()
-
-	# 4. Hide the modal (Time is already paused from open_modal!)
-	hide()
-	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
-
-
-func _generate_cargo_queue() -> void:
-	print("Generating cargo queue based on GameConstants...")
-	# Clean slate safety check
-	GlobalState.shift_cargo_queue.clear()
-
-	# Set the quota and base payout for the contract from our constants
-	GlobalState.shift_quota = GameConstants.CUSTOMS_QUOTA
-	GlobalState.shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
-
-	# Loop through our required quota count to build individual packages
-	for i in range(GameConstants.CUSTOMS_QUOTA):
-		# --- NEW STRONGLY TYPED CODE STARTS HERE ---
-		var package = GlobalState.CargoPackage.new()
-		package.visual_sprite_id = randi_range(1, 4)
-
-		# Roll against our 30% contraband constant
-		if randf() < GameConstants.CUSTOMS_CONTRABAND_CHANCE:
-			package.is_contraband = true
-
-			# Roll a 50/50 split on whether the contraband is Organic or Mineral
-			if randf() < 0.5:
-				package.contraband_type = "Organic" # Changed from bracket to dot notation!
-			else:
-				package.contraband_type = "Mineral" # Changed from bracket to dot notation!
-
-		# Push our finished data packet into the global array bridge
-		GlobalState.shift_cargo_queue.append(package)
-
-	print("Successfully generated cargo queue. Total items: ", GlobalState.shift_cargo_queue.size())
+func _on_roster_dog_selected(dog: DogResource) -> void:
+	if selected_team.size() < MAX_TEAM_SIZE and not selected_team.has(dog):
+		selected_team.append(dog)
+		_update_ui()
