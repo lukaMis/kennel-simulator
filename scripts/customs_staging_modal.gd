@@ -4,10 +4,10 @@ const MAX_TEAM_SIZE: int = 2
 
 var selected_team: Array[DogResource] = []
 
-@onready var roster_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer/ScrollContainer/RosterList
-@onready var team_list: VBoxContainer = $ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn/VBoxContainer/TeamList
-@onready var button_start: Button = $ModalPanel/MarginContainer/VBoxContainer/ButtonRow/ButtonStart
-@onready var button_cancel: Button = $ModalPanel/MarginContainer/VBoxContainer/ButtonRow/ButtonCancel
+@onready var roster_list: VBoxContainer = %RosterList
+@onready var team_list: VBoxContainer = %TeamList
+@onready var button_start: Button = %ButtonStart
+@onready var button_cancel: Button = %ButtonCancel
 
 
 func _ready() -> void:
@@ -102,20 +102,19 @@ func _generate_cargo_queue() -> void:
 
 	# Loop through our required quota count to build individual packages
 	for i in range(GameConstants.CUSTOMS_QUOTA):
-		var package: Dictionary = {
-			"is_contraband": false,
-			"contraband_type": "Safe",
-			"visual_sprite_id": randi_range(1, 4), # Picks a random box layout
-		}
+		# --- NEW STRONGLY TYPED CODE STARTS HERE ---
+		var package = GlobalState.CargoPackage.new()
+		package.visual_sprite_id = randi_range(1, 4)
+
 		# Roll against our 30% contraband constant
 		if randf() < GameConstants.CUSTOMS_CONTRABAND_CHANCE:
-			package["is_contraband"] = true
+			package.is_contraband = true
 
 			# Roll a 50/50 split on whether the contraband is Organic or Mineral
 			if randf() < 0.5:
-				package["contraband_type"] = "Organic"
+				package.contraband_type = "Organic" # Changed from bracket to dot notation!
 			else:
-				package["contraband_type"] = "Mineral"
+				package.contraband_type = "Mineral" # Changed from bracket to dot notation!
 
 		# Push our finished data packet into the global array bridge
 		GlobalState.shift_cargo_queue.append(package)

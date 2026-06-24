@@ -46,12 +46,6 @@ func start_morning() -> void:
 	morning_started.emit()
 
 
-func stop_time_engine() -> void:
-	_time_is_ticking = false
-	TimeEngine.process_mode = Node.PROCESS_MODE_DISABLED
-	pass
-
-
 func _advance_minute() -> void:
 	minute += 1
 	if minute >= 60:

@@ -91,6 +91,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="RosterList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/LeftColumn/VBoxContainer/ScrollContainer" unique_id=962234618]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -114,6 +115,7 @@ custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
 [node name="TeamList" type="VBoxContainer" parent="ModalPanel/MarginContainer/VBoxContainer/ContentSplit/RightColumn/VBoxContainer" unique_id=175682579]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -126,10 +128,12 @@ layout_mode = 2
 alignment = 1
 
 [node name="ButtonCancel" type="Button" parent="ModalPanel/MarginContainer/VBoxContainer/ButtonRow" unique_id=851541537]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Cancel"
 
 [node name="ButtonStart" type="Button" parent="ModalPanel/MarginContainer/VBoxContainer/ButtonRow" unique_id=1843173893]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Start Shift"

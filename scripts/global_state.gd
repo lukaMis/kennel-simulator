@@ -23,7 +23,7 @@ var game_is_running: bool = true
 # Holds the specific dogs the player selected in the UI modal
 var active_shift_roster: Array[DogResource] = []
 # Holds the mathematical sequence of packages generated before the shift starts
-var shift_cargo_queue: Array[Dictionary] = []
+var shift_cargo_queue: Array[CargoPackage] = []
 # Tracks the shifting financial value of the contract
 var shift_current_payout: int = 0
 var shift_quota: int = 0
@@ -33,13 +33,17 @@ func _ready() -> void:
 	# Duplicate the exported array into your master roster.
 	# We use .duplicate() so if dogs gain/lose energy, it doesn't accidentally
 	# overwrite your default resource files in the editor!
-	master_dog_roster = starting_dogs.duplicate()
+	master_dog_roster.clear()
+	for dog in starting_dogs:
+		# duplicate(true) ensures sub-resources are also cloned
+		master_dog_roster.append(dog.duplicate(true))
 
 	# Clear out any logs from a previous play session by opening with WRITE mode
 	var file = FileAccess.open(GameConstants.LOG_FILE_PATH, FileAccess.WRITE)
 	if file:
 		file.store_line("=== Simulation Session Started ===")
 		file.close()
+
 	# 2. Seed our in-memory array with the session start header
 	log_history.append("=== Simulation Session Started ===")
 
@@ -109,3 +113,9 @@ func clear_shift_data() -> void:
 	shift_cargo_queue.clear()
 	shift_current_payout = 0
 	shift_quota = 0
+
+
+class CargoPackage extends RefCounted:
+	var is_contraband: bool = false
+	var contraband_type: String = "Safe"
+	var visual_sprite_id: int = 1
