@@ -22,12 +22,20 @@ func _ready() -> void:
 func open_modal() -> void:
 	# 1. Freeze the game state immediately
 	GlobalState.set_game_running(false)
-
 	selected_team.clear()
-
-	_populate_roster(GlobalState.master_dog_roster)
-	_update_ui()
+	_refresh_ui()
 	show()
+
+
+func _refresh_ui() -> void:
+	# 2. Rebuild Roster (Left Side)
+	_rebuild_roster()
+
+	# 3. Rebuild Team (Right Side)
+	_rebuild_shift_team()
+
+	# Update start button state
+	button_start.disabled = selected_team.is_empty()
 
 
 func _on_cancel_pressed() -> void:
@@ -47,40 +55,48 @@ func _on_start_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
 
 
-func _populate_roster(dogs: Array[DogResource]) -> void:
+func _on_roster_dog_selected(dog: DogResource) -> void:
+	if selected_team.size() < MAX_TEAM_SIZE:
+		selected_team.append(dog)
+		_refresh_ui()
+
+
+func _on_team_dog_clicked(dog: DogResource) -> void:
+	selected_team.erase(dog)
+	_refresh_ui()
+
+
+func _rebuild_roster() -> void:
+	# clear current roster
 	for child in roster_list.get_children():
 		child.queue_free()
 
-	for dog in dogs:
+	# 2. Rebuild Roster (Left Side)
+	for dog in GlobalState.master_dog_roster:
 		var btn = Button.new()
 		btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
 
-		# Stat Validation: Lock out exhausted or sleeping dogs
-		if dog.energy < 20.0 or dog.is_sleeping:
+		# Disable if exhausted, sleeping, OR already selected
+		var is_in_team = selected_team.has(dog)
+		if dog.energy < 20.0 or dog.is_sleeping or is_in_team:
 			btn.disabled = true
-			btn.text += " - UNAVAILABLE"
+			if is_in_team:
+				btn.text += " (Selected)"
 		else:
-			# Bind the specific dog resource to the button press
 			btn.pressed.connect(_on_roster_dog_selected.bind(dog))
 
 		roster_list.add_child(btn)
 
 
-func _update_ui() -> void:
-	# Update the right column (Selected Team)
+func _rebuild_shift_team():
+	# clear current team
 	for child in team_list.get_children():
 		child.queue_free()
 
+	# 3. Rebuild Team (Right Side)
 	for dog in selected_team:
-		var lbl = Label.new()
-		lbl.text = "- %s" % dog.name
-		team_list.add_child(lbl)
-
-	# Enable the Start button only if at least 1 dog is selected
-	button_start.disabled = selected_team.is_empty()
-
-
-func _on_roster_dog_selected(dog: DogResource) -> void:
-	if selected_team.size() < MAX_TEAM_SIZE and not selected_team.has(dog):
-		selected_team.append(dog)
-		_update_ui()
+		var btn = Button.new()
+		btn.text = "Remove %s" % dog.name
+		# When clicked, remove this specific dog
+		btn.pressed.connect(_on_team_dog_clicked.bind(dog))
+		team_list.add_child(btn)
