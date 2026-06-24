@@ -1,5 +1,8 @@
 extends Node
 
+signal shift_started()
+signal shift_ended()
+
 var active_shift_roster: Array[DogResource] = []
 var active_queue: Array[CargoPackage] = []
 var shift_current_payout: int = GameConstants.CUSTOMS_BASE_PAYOUT
@@ -13,6 +16,16 @@ func start_shift(team: Array[DogResource]) -> void:
 
 	# 2. Build the cargo queue
 	_generate_shift_queue()
+
+	shift_started.emit()
+	print("Shift has started")
+
+
+func stop_shift() -> void:
+	# placeholder for end of shift cleanup
+	shift_ended.emit()
+	print("Shift has ended")
+	pass
 
 
 func _generate_shift_queue() -> void:
