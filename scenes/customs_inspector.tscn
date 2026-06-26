@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://cejesl7x7ydcw"]
+[gd_scene format=3 uid="uid://dquw7d38gutr5"]
 
-[ext_resource type="Script" uid="uid://bklod0xv82f3p" path="res://scripts/customs_inspector.gd" id="1_5bkbu"]
+[ext_resource type="Script" uid="uid://dw3u15edqlt1" path="res://scripts/customs_inspector.gd" id="1_rwu0l"]
 
 [node name="CustomsInspector" type="ColorRect" unique_id=442191601]
 custom_minimum_size = Vector2(800, 600)
@@ -9,7 +9,7 @@ offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
-script = ExtResource("1_5bkbu")
+script = ExtResource("1_rwu0l")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=991289255]
 layout_mode = 1
@@ -43,6 +43,11 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Packages remaining"
+
+[node name="LabelMultiplier" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=1588545849]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Multiplayer"
 
 [node name="HBoxContainerEntitiesArea" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1787526987]
 layout_mode = 2
@@ -92,7 +97,7 @@ text = "Pass"
 [node name="ButtonInspect" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Inspect"
+text = "Doubt"
 
 [node name="PanelContainerFeedbackArea" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1787133763]
 custom_minimum_size = Vector2(0, 100)
