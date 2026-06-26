@@ -25,79 +25,69 @@ theme_override_constants/margin_bottom = 30
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=911199801]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 25
 
-[node name="HBoxContainerTopInfoBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=814854563]
+[node name="VBoxContainerTopInfoBar" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1717848399]
 layout_mode = 2
 
-[node name="LabelPayout" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=388362610]
+[node name="LabelPayout" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerTopInfoBar" unique_id=388362610]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Payout"
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=700218538]
+[node name="LabelMultiplier" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerTopInfoBar" unique_id=1588545849]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
+text = "Multiplier"
 
-[node name="LabelRemaining" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=250139517]
+[node name="LabelRemaining" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerTopInfoBar" unique_id=250139517]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Packages remaining"
 
-[node name="LabelMultiplier" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=1588545849]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Multiplayer"
-
-[node name="HBoxContainerEntitiesArea" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1787526987]
+[node name="HBoxContainerDogInfo" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1787526987]
 layout_mode = 2
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="PanelContainerDogUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea" unique_id=22841612]
+[node name="PanelContainerDogUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainerDogInfo" unique_id=22841612]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainerDogInfo/PanelContainerDogUI" unique_id=1906253958]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerDogUI" unique_id=1906253958]
-layout_mode = 2
-
-[node name="LabelDogName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerDogUI/VBoxContainer" unique_id=469312486]
+[node name="LabelDogName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerDogInfo/PanelContainerDogUI/VBoxContainer" unique_id=469312486]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Dog name"
 
-[node name="LabelDogReaction" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerDogUI/VBoxContainer" unique_id=805530818]
+[node name="LabelDogReaction" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerDogInfo/PanelContainerDogUI/VBoxContainer" unique_id=805530818]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Dog reaction"
 
-[node name="PanelContainerPackageUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea" unique_id=2144659467]
+[node name="HBoxContainerPackageInfo" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=282002768]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PanelContainerPackageUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainerPackageInfo" unique_id=2144659467]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainerPackageInfo/PanelContainerPackageUI" unique_id=346227769]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerPackageUI" unique_id=346227769]
-layout_mode = 2
-
-[node name="LabelPackageType" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerPackageUI/VBoxContainer" unique_id=565298253]
+[node name="LabelPackageType" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerPackageInfo/PanelContainerPackageUI/VBoxContainer" unique_id=565298253]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Package type"
 
-[node name="LabelPackageSprite" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerPackageUI/VBoxContainer" unique_id=1512596453]
+[node name="LabelPackageSprite" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerPackageInfo/PanelContainerPackageUI/VBoxContainer" unique_id=1512596453]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Package sprite"
-
-[node name="HBoxContainerActionButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2098951492]
-layout_mode = 2
-
-[node name="ButtonPass" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1643568259]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Pass"
-
-[node name="ButtonInspect" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Doubt"
 
 [node name="PanelContainerFeedbackArea" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1787133763]
 custom_minimum_size = Vector2(0, 100)
@@ -109,8 +99,25 @@ layout_mode = 2
 text = "Feedback label"
 horizontal_alignment = 1
 
+[node name="HBoxContainerActionButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2098951492]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="ButtonPass" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1643568259]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pass"
+
+[node name="ButtonInspect" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Doubt"
+
 [node name="CenterContainerFlowControl" type="CenterContainer" parent="MarginContainer/VBoxContainer" unique_id=1903455779]
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="ButtonNext" type="Button" parent="MarginContainer/VBoxContainer/CenterContainerFlowControl" unique_id=1501739479]
 unique_name_in_owner = true
