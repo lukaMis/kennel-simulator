@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://cejesl7x7ydcw"]
 
+[ext_resource type="Script" uid="uid://bklod0xv82f3p" path="res://scripts/customs_inspector.gd" id="1_5bkbu"]
+
 [node name="CustomsInspector" type="ColorRect" unique_id=442191601]
 custom_minimum_size = Vector2(800, 600)
 offset_right = 800.0
@@ -7,20 +9,106 @@ offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
+script = ExtResource("1_5bkbu")
 
-[node name="Label" type="Label" parent="." unique_id=329150239]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=991289255]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -142.0
-offset_top = -11.5
-offset_right = 142.0
-offset_bottom = 11.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Customs inspector mini game active."
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=911199801]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainerTopInfoBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=814854563]
+layout_mode = 2
+
+[node name="LabelPayout" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=388362610]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Payout"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=700218538]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelRemaining" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerTopInfoBar" unique_id=250139517]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Packages remaining"
+
+[node name="HBoxContainerEntitiesArea" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1787526987]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PanelContainerDogUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea" unique_id=22841612]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerDogUI" unique_id=1906253958]
+layout_mode = 2
+
+[node name="LabelDogName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerDogUI/VBoxContainer" unique_id=469312486]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dog name"
+
+[node name="LabelDogReaction" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerDogUI/VBoxContainer" unique_id=805530818]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dog reaction"
+
+[node name="PanelContainerPackageUI" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea" unique_id=2144659467]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerPackageUI" unique_id=346227769]
+layout_mode = 2
+
+[node name="LabelPackageType" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerPackageUI/VBoxContainer" unique_id=565298253]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Package type"
+
+[node name="LabelPackageSprite" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainerEntitiesArea/PanelContainerPackageUI/VBoxContainer" unique_id=1512596453]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Package sprite"
+
+[node name="HBoxContainerActionButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2098951492]
+layout_mode = 2
+
+[node name="ButtonPass" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1643568259]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pass"
+
+[node name="ButtonInspect" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Inspect"
+
+[node name="PanelContainerFeedbackArea" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1787133763]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="LabelFeedback" type="Label" parent="MarginContainer/VBoxContainer/PanelContainerFeedbackArea" unique_id=1108600437]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Feedback label"
 horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="CenterContainerFlowControl" type="CenterContainer" parent="MarginContainer/VBoxContainer" unique_id=1903455779]
+layout_mode = 2
+
+[node name="ButtonNext" type="Button" parent="MarginContainer/VBoxContainer/CenterContainerFlowControl" unique_id=1501739479]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Next package
+"

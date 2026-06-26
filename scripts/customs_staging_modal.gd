@@ -14,8 +14,8 @@ func _ready() -> void:
 	# Hide the modal by default when the kennel loads
 	hide()
 
-	button_cancel.pressed.connect(_on_cancel_pressed)
 	button_start.pressed.connect(_on_start_pressed)
+	button_cancel.pressed.connect(_on_cancel_pressed)
 
 
 # Call this from your Main scene when the player clicks the "Work" button
@@ -25,6 +25,26 @@ func open_modal() -> void:
 	selected_team.clear()
 	_refresh_ui()
 	show()
+
+
+func _on_start_pressed() -> void:
+	# 1. Hide the modal
+	hide()
+
+	# 2. Hand the selected team over to the manager and let it handle the rest
+	#CustomsInspectionManager.start_shift(selected_team)
+
+	# Just store the team in the manager locker for transit
+	CustomsInspectionManager.set_shift_team(selected_team)
+
+	# 3. Swap to the minigame scene
+	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
+
+
+func _on_cancel_pressed() -> void:
+	# 2. Unfreeze the game if they back out!
+	GlobalState.set_game_running(true)
+	hide()
 
 
 func _refresh_ui() -> void:
@@ -38,40 +58,12 @@ func _refresh_ui() -> void:
 	button_start.disabled = selected_team.is_empty()
 
 
-func _on_cancel_pressed() -> void:
-	# 2. Unfreeze the game if they back out!
-	GlobalState.set_game_running(true)
-	hide()
-
-
-func _on_start_pressed() -> void:
-	# 1. Hand the selected team over to the manager and let it handle the rest
-	CustomsInspectionManager.start_shift(selected_team)
-
-	# 2. Hide the modal
-	hide()
-
-	# 3. Swap to the minigame scene
-	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
-
-
-func _on_roster_dog_selected(dog: DogResource) -> void:
-	if selected_team.size() < MAX_TEAM_SIZE:
-		selected_team.append(dog)
-		_refresh_ui()
-
-
-func _on_team_dog_clicked(dog: DogResource) -> void:
-	selected_team.erase(dog)
-	_refresh_ui()
-
-
 func _rebuild_roster() -> void:
-	# clear current roster
+	# 1 Clear current Roster (Left Side)
 	for child in roster_list.get_children():
 		child.queue_free()
 
-	# 2. Rebuild Roster (Left Side)
+	# 2 Rebuild Roster (Left Side)
 	for dog in GlobalState.master_dog_roster:
 		var btn = Button.new()
 		btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
@@ -88,15 +80,26 @@ func _rebuild_roster() -> void:
 		roster_list.add_child(btn)
 
 
-func _rebuild_shift_team():
-	# clear current team
+func _rebuild_shift_team() -> void:
+	# 1 Clear current Team (Right Side)
 	for child in team_list.get_children():
 		child.queue_free()
 
-	# 3. Rebuild Team (Right Side)
+	# 2 Rebuild Team (Right Side)
 	for dog in selected_team:
 		var btn = Button.new()
 		btn.text = "Remove %s" % dog.name
 		# When clicked, remove this specific dog
 		btn.pressed.connect(_on_team_dog_clicked.bind(dog))
 		team_list.add_child(btn)
+
+
+func _on_roster_dog_selected(dog: DogResource) -> void:
+	if selected_team.size() < MAX_TEAM_SIZE:
+		selected_team.append(dog)
+	_refresh_ui()
+
+
+func _on_team_dog_clicked(dog: DogResource) -> void:
+	selected_team.erase(dog)
+	_refresh_ui()
