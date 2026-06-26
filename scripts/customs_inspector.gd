@@ -28,11 +28,14 @@ func _ready() -> void:
 	var working_dogs = CustomsInspectionManager.active_shift_roster
 	var packages_to_check = CustomsInspectionManager.active_queue
 
-	# Setup input
-	button_pass.pressed.connect(_on_action_pressed.bind(false)) # False = Pass
-	button_doubt.pressed.connect(_on_action_pressed.bind(true)) # True = Doubt
+	# Explicitly connect each button to its own function
+	button_pass.pressed.connect(_on_pass_pressed)
+	button_doubt.pressed.connect(_on_doubt_pressed)
+
 	button_next.pressed.connect(_load_next_package)
-	button_next.hide()
+	#button_next.hide()
+
+	_inspection_buttons_state_update(true)
 
 	print("Inspector Scene: Loaded successfully with ", working_dogs.size(), " dogs.")
 	print("Inspector Scene: Loaded successfully with ", packages_to_check.size(), " packages.")
@@ -48,7 +51,7 @@ func _on_shift_started() -> void:
 
 	label_dog_name.text = current_dog.name
 	label_payout.text = "Payout: $" + str(CustomsInspectionManager.shift_current_payout)
-	_load_next_package()
+	#_load_next_package()
 
 
 func _on_shift_ended() -> void:
@@ -73,34 +76,90 @@ func _load_next_package() -> void:
 	var reaction = current_dog.tell_reactions[current_dog.current_confidence_level][current_package.is_contraband]
 	label_dog_reaction.text = reaction
 
-	button_pass.disabled = false
-	button_doubt.disabled = false
+	#button_pass.disabled = false
+	#button_doubt.disabled = false
+	_inspection_buttons_state_update(false)
 
 
-func _on_action_pressed(is_doubting: bool) -> void:
-	button_pass.disabled = true
-	button_doubt.disabled = true
+#
+#func _on_action_pressed(is_doubting: bool) -> void:
+#button_pass.disabled = true
+#button_doubt.disabled = true
+#
+#var is_correct = (is_doubting == current_package.is_contraband)
+#
+## 2. Update Stats
+#current_dog.record_inspection_result(is_correct)
+#
+## Update confidence
+#if is_correct:
+#synergy_multiplier += 0.1 # Example increment
+#label_multiplier.text = "Multiplier: " + str(snappedf(synergy_multiplier, 0.1)) + "x"
+#current_dog.increase_confidence()
+## Determine outcome key
+#var outcome_key = "correct_seize" if is_doubting else "correct_pass"
+#label_feedback.text = current_dog.outcome_reactions[outcome_key]
+#else:
+#synergy_multiplier = 1.0 # Reset on failure
+#label_multiplier.text = "Multiplier: 1.0x"
+#current_dog.decrease_confidence()
+## Determine outcome key
+#var outcome_key = "wrong_seize" if is_doubting else "wrong_pass"
+#label_feedback.text = current_dog.outcome_reactions[outcome_key]
+#
+#button_next.show()
+#current_queue_index += 1
+#
+#
+# --- BUTTON SIGNALS ---
+func _on_pass_pressed() -> void:
+	# Pass means we are NOT doubting (is_doubting = false)
+	_process_inspection_action(false)
+
+
+func _on_doubt_pressed() -> void:
+	# Doubt means we ARE doubting (is_doubting = true)
+	_process_inspection_action(true)
+
+
+# --- HELPER LOGIC ---
+func _process_inspection_action(is_doubting: bool) -> void:
+	# Disable buttons immediately
+	#button_pass.disabled = true
+	#button_doubt.disabled = true
+	_inspection_buttons_state_update(true)
 
 	var is_correct = (is_doubting == current_package.is_contraband)
 
-	# 2. Update Stats
+	# Update Stats
 	current_dog.record_inspection_result(is_correct)
 
-	# Update confidence
+	# Update confidence and UI
 	if is_correct:
-		synergy_multiplier += 0.1 # Example increment
+		synergy_multiplier += 0.1
 		label_multiplier.text = "Multiplier: " + str(snappedf(synergy_multiplier, 0.1)) + "x"
 		current_dog.increase_confidence()
-		# Determine outcome key
 		var outcome_key = "correct_seize" if is_doubting else "correct_pass"
 		label_feedback.text = current_dog.outcome_reactions[outcome_key]
 	else:
-		synergy_multiplier = 1.0 # Reset on failure
+		synergy_multiplier = 1.0
 		label_multiplier.text = "Multiplier: 1.0x"
 		current_dog.decrease_confidence()
-		# Determine outcome key
 		var outcome_key = "wrong_seize" if is_doubting else "wrong_pass"
 		label_feedback.text = current_dog.outcome_reactions[outcome_key]
 
 	button_next.show()
 	current_queue_index += 1
+
+
+func _inspection_buttons_state_update(disable_buttons: bool) -> void:
+	if disable_buttons:
+		button_pass.disabled = true
+		button_doubt.disabled = true
+		button_pass.hide()
+		button_doubt.hide()
+	else:
+		button_pass.disabled = false
+		button_doubt.disabled = false
+		button_pass.show()
+		button_doubt.show()
