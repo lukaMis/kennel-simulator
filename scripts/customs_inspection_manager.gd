@@ -3,7 +3,7 @@ extends Node
 signal shift_started()
 signal shift_ended()
 
-#	packages to inspec in current work shift
+#	Total of packages to inspec in current work shift
 var shift_quota: int = GameConstants.CUSTOMS_QUOTA
 #	tracks shift payout with boosts and penalties included
 var shift_current_payout: int = GameConstants.CUSTOMS_BASE_PAYOUT
@@ -23,22 +23,16 @@ func initialize_shift_session() -> void:
 	print("CustomsInspectionManager: Scene is ready. Running setup logic...")
 	_generate_shift_queue()
 
-	# Safe to emit now! The scene is listening.
-	#shift_started.emit()
-	#print("Shift has started")
-
 
 func start_shift() -> void:
 	shift_started.emit()
 	print("Shift has started")
-	pass
 
 
 func stop_shift() -> void:
-	#_clear_shift()
+	_clear_shift()
 	shift_ended.emit()
 	print("Shift has ended")
-	pass
 
 
 # Add this at the bottom of customs_inspection_manager.gd
@@ -48,22 +42,6 @@ func remove_inspected_package() -> void:
 		active_queue.pop_front()
 
 
-# The UI modal passes the team directly into this function
-#func start_shift(team: Array[DogResource]) -> void:
-## 1. Store the shallow clone of the working dogs
-#active_shift_roster = team.duplicate()
-#
-## 2. Build the cargo queue
-#_generate_shift_queue()
-#
-#shift_started.emit()
-#print("Shift has started")
-#func stop_shift() -> void:
-## placeholder for end of shift cleanup
-#_clear_shift()
-#shift_ended.emit()
-#print("Shift has ended")
-#pass
 func _generate_shift_queue() -> void:
 	print("CustomsCargoManager: Generating cargo queue...")
 	active_queue.clear()
@@ -85,10 +63,11 @@ func _generate_shift_queue() -> void:
 		active_queue.append(package)
 	print("CustomsCargoManager: Successfully generated ", active_queue.size(), " items.")
 
-	#func _clear_shift() -> void:
-	#active_shift_roster.clear()
-	#active_queue.clear()
-	## Reset payout/quota to baseline
-	#shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
-	#shift_quota = GameConstants.CUSTOMS_QUOTA
-	#print("CustomsInspectionManager: Shift cleaned up.")
+
+func _clear_shift() -> void:
+	active_shift_roster.clear()
+	active_queue.clear()
+	# Reset payout/quota to baseline
+	shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
+	shift_quota = GameConstants.CUSTOMS_QUOTA
+	print("CustomsInspectionManager: Shift cleaned up.")
