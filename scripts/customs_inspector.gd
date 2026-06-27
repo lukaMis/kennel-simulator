@@ -13,7 +13,7 @@ var current_package: CargoPackage
 @onready var label_dog_name: Label = %LabelDogName
 @onready var label_dog_reaction: Label = %LabelDogReaction
 @onready var label_package_type: Label = %LabelPackageType
-@onready var label_package_sprite: Label = %LabelPackageSprite
+@onready var label_package_owner: Label = %LabelPackageOwner
 @onready var label_feedback: Label = %LabelFeedback
 @onready var button_pass: Button = %ButtonPass
 @onready var button_doubt: Button = %ButtonInspect
@@ -91,11 +91,12 @@ func _load_next_package() -> void:
 	current_package = CustomsInspectionManager.active_queue[0]
 
 	# Update UI with current package info
-	label_package_type.text = "Type: " + current_package.contraband_type
-	label_package_sprite.text = "ID: " + str(current_package.visual_sprite_id)
+	label_package_type.text = "Package: " + current_package.package_type
+	label_package_owner.text = "Owner: " + current_package.package_owner
 
 	# Update UI with current package queue info
-	label_remaining.text = "Remaining packages to inspect:" + " " + str(CustomsInspectionManager.active_queue.size())
+
+	label_remaining.text = "Remaining packages to inspect:" + " " + str(GameConstants.CUSTOMS_QUOTA) + "/" + str(CustomsInspectionManager.active_queue.size())
 
 	label_feedback.text = ""
 
@@ -107,7 +108,7 @@ func _load_next_package() -> void:
 	CustomsInspectionManager.remove_inspected_package()
 
 	# Update UI with current package queue info
-	label_remaining.text = "Remaining packages to inspect:" + " " + str(CustomsInspectionManager.active_queue.size())
+	label_remaining.text = "Remaining packages to inspect: %s\\%s" % [str(CustomsInspectionManager.active_queue.size()), str(GameConstants.CUSTOMS_QUOTA)]
 
 	# Enable inspection buttons
 	_set_inspection_buttons_enabled(true)
@@ -136,19 +137,20 @@ func _process_inspection_action(is_doubting: bool) -> void:
 	current_dog.record_inspection_result(is_correct)
 
 	# Update confidence and UI
+	var outcome_key: String = ""
 	if is_correct:
 		synergy_multiplier += 0.1
 		label_multiplier.text = "Multiplier: " + str(snappedf(synergy_multiplier, 0.1)) + "x"
 		current_dog.increase_confidence()
-		var outcome_key = "correct_seize" if is_doubting else "correct_pass"
-		label_feedback.text = current_dog.outcome_reactions[outcome_key]
+		outcome_key = "correct_seize" if is_doubting else "correct_pass"
 	else:
 		synergy_multiplier = 1.0
 		label_multiplier.text = "Multiplier: 1.0x"
 		current_dog.decrease_confidence()
-		var outcome_key = "wrong_seize" if is_doubting else "wrong_pass"
-		label_feedback.text = current_dog.outcome_reactions[outcome_key]
+		outcome_key = "wrong_seize" if is_doubting else "wrong_pass"
 
+	label_dog_reaction.text = current_dog.outcome_reactions[outcome_key]
+	label_feedback.text = current_package.outcome_reactions[outcome_key]
 	button_next.show()
 
 

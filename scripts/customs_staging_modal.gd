@@ -57,11 +57,28 @@ func _refresh_ui() -> void:
 	# 2. Rebuild Selected Dog (Right Side)
 	_rebuild_selected_dog()
 
-	# REFACTORED: Start button is disabled if no dog is selected
+	# Start button is disabled if no dog is selected
 	button_start.disabled = (selected_dog == null)
 
 
 func _rebuild_roster() -> void:
+	# 1 Clear current Roster (Left Side)
+	for child in roster_list.get_children():
+		child.queue_free()
+
+	# 2 Rebuild Roster (Left Side)
+	var btn: Button = null
+	for dog in GlobalState.master_dog_roster:
+		# if energy is high enough end dog is NOT sleeping and it is NOT selected, add it to the list of available dogs for shift and make a button for it to add it to the work shift.
+		var is_selected = (selected_dog == dog)
+		if not dog.energy <= 20.0 and not dog.is_sleeping and not is_selected:
+			btn = Button.new()
+			btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
+			btn.pressed.connect(_on_roster_dog_selected.bind(dog))
+			roster_list.add_child(btn)
+
+
+func _rebuild_roster_orig() -> void:
 	# 1 Clear current Roster (Left Side)
 	for child in roster_list.get_children():
 		child.queue_free()
@@ -76,9 +93,9 @@ func _rebuild_roster() -> void:
 		#Disable if exhausted, sleeping, OR already selected
 		if dog.energy < 20.0 or dog.is_sleeping or is_selected:
 			btn.disabled = true
+			#btn.visible = false
 			if is_selected:
 				btn.text += " (Selected)"
-
 		else:
 			btn.pressed.connect(_on_roster_dog_selected.bind(dog))
 

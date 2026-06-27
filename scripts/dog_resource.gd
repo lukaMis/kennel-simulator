@@ -16,16 +16,22 @@ extends Resource
 @export var total_dog_correct: int = 0
 @export var total_dog_wrong: int = 0
 # --- Mapping ---
+@export var tell_reactions_ORIG: Dictionary = {
+	1: { true: "dog subtle sniff", false: "dog looks away" },
+	2: { true: "dog alert posture", false: "dog calm standing" },
+	3: { true: "dog aggressive bark", false: "dog happy sit" },
+}
+# FOR DEBUGGING ONLY
 @export var tell_reactions: Dictionary = {
-	1: { true: "dog_subtle_sniff", false: "dog_looks_away" },
-	2: { true: "dog_alert_posture", false: "dog_calm_standing" },
-	3: { true: "dog_aggressive_bark", false: "dog_happy_sit" },
+	1: { true: "DIRTY", false: "CLEAN" },
+	2: { true: "DIRTY", false: "CLEAN" },
+	3: { true: "DIRTY", false: "CLEAN" },
 }
 @export var outcome_reactions: Dictionary = {
-	"correct_seize": "dog_excited_wag",
-	"correct_pass": "dog_relieved_sigh",
-	"wrong_seize": "dog_confused_tilt",
-	"wrong_pass": "dog_cowering_shame",
+	"correct_seize": "dog excited wag",
+	"correct_pass": "dog relieved sigh",
+	"wrong_seize": "dog confused tilt",
+	"wrong_pass": "dog cowering shame",
 }
 
 # --- Inspection Stats (Session) ---
