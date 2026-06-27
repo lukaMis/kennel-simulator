@@ -48,18 +48,11 @@ func _generate_shift_queue() -> void:
 	shift_quota = GameConstants.CUSTOMS_QUOTA
 	shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
 
+	# The manager just loops and commands packages to exist;
+	# the packages handle their own internal data layout!
 	for i in range(shift_quota):
-		var package = CargoPackage.new()
-		package.visual_sprite_id = randi_range(1, 4)
+		active_queue.append(CargoPackage.new())
 
-		if randf() < GameConstants.CUSTOMS_CONTRABAND_CHANCE:
-			package.is_contraband = true
-			if randf() < 0.5:
-				package.contraband_type = "Weapons"
-			else:
-				package.contraband_type = "Drugs"
-
-		active_queue.append(package)
 	print("CustomsCargoManager: Successfully generated ", active_queue.size(), " items.")
 
 
