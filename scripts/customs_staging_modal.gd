@@ -1,8 +1,8 @@
 extends ColorRect
 
-const MAX_TEAM_SIZE: int = 2
+const MAX_TEAM_SIZE: int = 1
 
-var selected_team: Array[DogResource] = []
+var selected_dog: DogResource = null
 
 @onready var roster_list: VBoxContainer = %RosterList
 @onready var team_list: VBoxContainer = %TeamList
@@ -14,7 +14,7 @@ func _ready() -> void:
 	# Hide the modal by default when the kennel loads
 	hide()
 
-	selected_team.clear()
+	selected_dog = null
 
 	# Connect start and cancel game buttons
 	button_start.pressed.connect(_on_start_pressed)
@@ -25,7 +25,8 @@ func _ready() -> void:
 func open_modal() -> void:
 	# 1. Freeze the game state immediately
 	GlobalState.set_game_running(false)
-	selected_team.clear()
+
+	selected_dog = null
 	_refresh_ui()
 	show()
 
@@ -34,8 +35,8 @@ func _on_start_pressed() -> void:
 	# 1. Hide the modal
 	hide()
 
-	# Just store the team in the manager locker for transit
-	CustomsInspectionManager.set_shift_team(selected_team)
+	# REFACTORED: Push our single choice straight to the manager
+	CustomsInspectionManager.set_shift_dog(selected_dog)
 
 	# 3. Swap to the minigame scene
 	get_tree().change_scene_to_file("res://scenes/customs_inspector.tscn")
@@ -50,14 +51,14 @@ func _on_cancel_pressed() -> void:
 
 
 func _refresh_ui() -> void:
-	# 2. Rebuild Roster (Left Side)
+	# 1. Rebuild Roster (Left Side)
 	_rebuild_roster()
 
-	# 3. Rebuild Team (Right Side)
-	_rebuild_shift_team()
+	# 2. Rebuild Selected Dog (Right Side)
+	_rebuild_selected_dog()
 
-	# Update start button state
-	button_start.disabled = selected_team.is_empty()
+	# REFACTORED: Start button is disabled if no dog is selected
+	button_start.disabled = (selected_dog == null)
 
 
 func _rebuild_roster() -> void:
@@ -70,40 +71,38 @@ func _rebuild_roster() -> void:
 		var btn = Button.new()
 		btn.text = "%s (Energy: %d)" % [dog.name, dog.energy]
 
-		# Disable if exhausted, sleeping, OR already selected
-		var is_in_team = selected_team.has(dog)
-		if dog.energy < 20.0 or dog.is_sleeping or is_in_team:
+		# REFACTORED: Check if this specific resource instance is selected
+		var is_selected = (selected_dog == dog)
+		#Disable if exhausted, sleeping, OR already selected
+		if dog.energy < 20.0 or dog.is_sleeping or is_selected:
 			btn.disabled = true
-			if is_in_team:
+			if is_selected:
 				btn.text += " (Selected)"
+
 		else:
 			btn.pressed.connect(_on_roster_dog_selected.bind(dog))
 
 		roster_list.add_child(btn)
 
 
-func _rebuild_shift_team() -> void:
-	# 1 Clear current Team (Right Side)
+# REFACTORED: Renders either nothing or our single chosen choice on the right panel
+func _rebuild_selected_dog() -> void:
 	for child in team_list.get_children():
 		child.queue_free()
 
-	# 2 Rebuild Team (Right Side)
-	for dog in selected_team:
+	if selected_dog != null:
 		var btn = Button.new()
-		btn.text = "Remove %s" % dog.name
-
-		# Enable team dogs to be clicked and removed from current shift team
-		btn.pressed.connect(_on_team_dog_clicked.bind(dog))
+		btn.text = "Remove %s" % selected_dog.name
+		btn.pressed.connect(_on_remove_dog_pressed)
 		team_list.add_child(btn)
 
 
 func _on_roster_dog_selected(dog: DogResource) -> void:
-	if selected_team.size() < MAX_TEAM_SIZE:
-		selected_team.append(dog)
+	selected_dog = dog
 	_refresh_ui()
 
 
-func _on_team_dog_clicked(dog: DogResource) -> void:
-	# When clicked, remove this specific dog
-	selected_team.erase(dog)
+# REFACTORED: Clears the item out completely
+func _on_remove_dog_pressed() -> void:
+	selected_dog = null
 	_refresh_ui()

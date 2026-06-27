@@ -32,10 +32,10 @@ func _ready() -> void:
 	CustomsInspectionManager.initialize_shift_session()
 
 	# 3. Pull the data cleanly to populate your UI
-	# TODO, remove this check, this is only for debuging so i can load customs inspector scene directly without main scene and customs staging modal
-	if CustomsInspectionManager.active_shift_roster.is_empty():
-		CustomsInspectionManager.set_shift_team(GlobalState.master_dog_roster)
-	# End of TODO
+	# TODO, remove this check, it is Fallback check for localized scene running/debugging
+	if CustomsInspectionManager.active_shift_dog == null:
+		if not GlobalState.master_dog_roster.is_empty():
+			CustomsInspectionManager.set_shift_dog(GlobalState.master_dog_roster[0])
 
 	# Explicitly connect each button to its own function
 	button_pass.pressed.connect(_on_pass_pressed)
@@ -45,7 +45,7 @@ func _ready() -> void:
 
 	_set_inspection_buttons_enabled(false)
 	# Read directly from the manager for your debug prints
-	print("Inspector Scene: Loaded successfully with ", CustomsInspectionManager.active_shift_roster.size(), " dogs.")
+	print("Inspector Scene: Loaded successfully with ", CustomsInspectionManager.active_shift_dog, " dog.")
 	print("Inspector Scene: Loaded successfully with ", CustomsInspectionManager.active_queue.size(), " packages.")
 
 	CustomsInspectionManager.start_shift()
@@ -60,8 +60,8 @@ func _clear_local_data() -> void:
 
 
 func _on_shift_started() -> void:
-	# Assume index 0 for prototype, logic can be expanded for multiple dogs
-	current_dog = CustomsInspectionManager.active_shift_roster[0]
+	# REFACTORED: No arrays or indices needed! Grab the variable object directly.
+	current_dog = CustomsInspectionManager.active_shift_dog
 	current_dog.reset_session()
 
 	# NEW: Initialize UI elements immediately
@@ -74,7 +74,6 @@ func _on_shift_started() -> void:
 
 
 func _on_shift_ended() -> void:
-	# clear local data
 	_clear_local_data()
 	pass
 

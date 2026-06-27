@@ -8,14 +8,13 @@ var shift_quota: int = GameConstants.CUSTOMS_QUOTA
 #	tracks shift payout with boosts and penalties included
 var shift_current_payout: int = GameConstants.CUSTOMS_BASE_PAYOUT
 #	dogs and packages for current work shift
-var active_shift_roster: Array[DogResource] = []
+var active_shift_dog: DogResource = null
 var active_queue: Array[CargoPackage] = []
 
 
-# Step 1: The modal drops off the dogs here right before transit
-func set_shift_team(team: Array[DogResource]) -> void:
-	active_shift_roster.clear()
-	active_shift_roster = team.duplicate()
+# The modal drops off dog for the work shift here right before scene transit
+func set_shift_dog(dog: DogResource) -> void:
+	active_shift_dog = dog
 
 
 # Step 2: Called ONLY when the Customs Inspector scene has completely loaded
@@ -65,7 +64,7 @@ func _generate_shift_queue() -> void:
 
 
 func _clear_shift() -> void:
-	active_shift_roster.clear()
+	active_shift_dog = null
 	active_queue.clear()
 	# Reset payout/quota to baseline
 	shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
