@@ -1,32 +1,46 @@
 extends Node
 
-# Add these variables at the top
+# --- GAME VARIABLES ---
 var synergy_multiplier: float = 1.0
+#var current_queue_index: int = 0
+# --- DOGS VARIABLES ---
+var working_dogs = []
 var current_dog: DogResource
+# --- PACKAGES VARIABLES ---
+var packages_to_check = []
 var current_package: CargoPackage
-var current_queue_index: int = 0
 
-@onready var label_multiplier = %LabelMultiplier # Make sure to add this node to your scene
-@onready var label_package_type = %LabelPackageType
-@onready var label_package_sprite = %LabelPackageSprite
-@onready var label_dog_reaction = %LabelDogReaction
-@onready var label_feedback = %LabelFeedback
-@onready var button_pass = %ButtonPass
-@onready var button_doubt = %ButtonInspect # Renaming logic for clarity
-@onready var button_next = %ButtonNext
-@onready var label_dog_name = %LabelDogName
-@onready var label_payout = %LabelPayout
+@onready var label_payout: Label = %LabelPayout
+@onready var label_multiplier: Label = %LabelMultiplier
+@onready var label_remaining: Label = %LabelRemaining
+@onready var label_dog_name: Label = %LabelDogName
+@onready var label_dog_reaction: Label = %LabelDogReaction
+@onready var label_package_type: Label = %LabelPackageType
+@onready var label_package_sprite: Label = %LabelPackageSprite
+@onready var label_feedback: Label = %LabelFeedback
+@onready var button_pass: Button = %ButtonPass
+@onready var button_doubt: Button = %ButtonInspect
+@onready var button_next: Button = %ButtonNext
 
 
 func _ready() -> void:
+	# clear local data
+	_clear_local_data()
+
 	# Connect signals
 	CustomsInspectionManager.shift_started.connect(_on_shift_started)
 	CustomsInspectionManager.shift_ended.connect(_on_shift_ended)
+
 	CustomsInspectionManager.initialize_shift_session()
 
 	# 3. Pull the data cleanly to populate your UI
-	var working_dogs = CustomsInspectionManager.active_shift_roster
-	var packages_to_check = CustomsInspectionManager.active_queue
+	if CustomsInspectionManager.active_shift_roster.is_empty():
+		#working_dogs = GlobalState.master_dog_roster.duplicate()
+		CustomsInspectionManager.set_shift_team(GlobalState.master_dog_roster)
+	#var working_dogs = CustomsInspectionManager.active_shift_roster
+	packages_to_check = CustomsInspectionManager.active_queue
+
+	# Just store the team in the manager locker for transit
 
 	# Explicitly connect each button to its own function
 	button_pass.pressed.connect(_on_pass_pressed)
@@ -35,11 +49,20 @@ func _ready() -> void:
 	button_next.pressed.connect(_load_next_package)
 	#button_next.hide()
 
-	_inspection_buttons_state_update(true)
+	#_inspection_buttons_state_update(true)
+	_set_inspection_buttons_enabled(false)
 
 	print("Inspector Scene: Loaded successfully with ", working_dogs.size(), " dogs.")
 	print("Inspector Scene: Loaded successfully with ", packages_to_check.size(), " packages.")
 	CustomsInspectionManager.start_shift()
+
+
+func _clear_local_data() -> void:
+	synergy_multiplier = 1
+	working_dogs.clear()
+	current_dog = null
+	packages_to_check.clear()
+	current_package = null
 
 
 func _on_shift_started() -> void:
@@ -51,34 +74,50 @@ func _on_shift_started() -> void:
 
 	label_dog_name.text = current_dog.name
 	label_payout.text = "Payout: $" + str(CustomsInspectionManager.shift_current_payout)
+
+	#label_remaining.text = str(CustomsInspectionManager.active_queue.size() - current_queue_index)
+	# NEW: Just use the size of the array directly
+	label_remaining.text = "Packages to inspect:" + " " + str(CustomsInspectionManager.active_queue.size())
 	#_load_next_package()
 
 
 func _on_shift_ended() -> void:
+	# clear local data
+	_clear_local_data()
 	pass
 
 
 func _load_next_package() -> void:
-	if current_queue_index >= CustomsInspectionManager.active_queue.size():
+	# NEW: Check if the queue is empty
+	if CustomsInspectionManager.active_queue.is_empty():
 		print("Shift Complete")
 		return
 
-	current_package = CustomsInspectionManager.active_queue[current_queue_index]
+	# NEW: Always grab the first package in line
+	current_package = CustomsInspectionManager.active_queue[0]
+
+	# Remove the package from the queue via the Manager
+	CustomsInspectionManager.remove_inspected_package()
 
 	# Update UI with current package info
 	label_package_type.text = "Type: " + current_package.contraband_type
 	label_package_sprite.text = "ID: " + str(current_package.visual_sprite_id)
+	#label_remaining.text = str(CustomsInspectionManager.active_queue.size())
+	label_remaining.text = "Packages to inspect:" + " " + str(CustomsInspectionManager.active_queue.size())
 
-	button_next.hide()
 	label_feedback.text = ""
+
+	#label_remaining.text = str(CustomsInspectionManager.active_queue.size() - current_queue_index)
 
 	# 1. Display the "Tell" (System 6: Tell phase)
 	var reaction = current_dog.tell_reactions[current_dog.current_confidence_level][current_package.is_contraband]
 	label_dog_reaction.text = reaction
 
+	button_next.hide()
 	#button_pass.disabled = false
 	#button_doubt.disabled = false
-	_inspection_buttons_state_update(false)
+	#_inspection_buttons_state_update(false)
+	_set_inspection_buttons_enabled(true)
 
 
 #
@@ -127,7 +166,8 @@ func _process_inspection_action(is_doubting: bool) -> void:
 	# Disable buttons immediately
 	#button_pass.disabled = true
 	#button_doubt.disabled = true
-	_inspection_buttons_state_update(true)
+	#_inspection_buttons_state_update(true)
+	_set_inspection_buttons_enabled(false)
 
 	var is_correct = (is_doubting == current_package.is_contraband)
 
@@ -148,8 +188,19 @@ func _process_inspection_action(is_doubting: bool) -> void:
 		var outcome_key = "wrong_seize" if is_doubting else "wrong_pass"
 		label_feedback.text = current_dog.outcome_reactions[outcome_key]
 
+	## NEW: Remove the package from the queue via the Manager
+	#CustomsInspectionManager.remove_inspected_package()
 	button_next.show()
-	current_queue_index += 1
+
+	#current_queue_index += 1
+
+
+func _set_inspection_buttons_enabled(is_enabled: bool):
+	button_pass.disabled = not is_enabled
+	button_doubt.disabled = not is_enabled
+
+	button_pass.visible = is_enabled
+	button_doubt.visible = is_enabled
 
 
 func _inspection_buttons_state_update(disable_buttons: bool) -> void:

@@ -14,6 +14,7 @@ var active_queue: Array[CargoPackage] = []
 
 # Step 1: The modal drops off the dogs here right before transit
 func set_shift_team(team: Array[DogResource]) -> void:
+	active_shift_roster.clear()
 	active_shift_roster = team.duplicate()
 
 
@@ -31,6 +32,20 @@ func start_shift() -> void:
 	shift_started.emit()
 	print("Shift has started")
 	pass
+
+
+func stop_shift() -> void:
+	#_clear_shift()
+	shift_ended.emit()
+	print("Shift has ended")
+	pass
+
+
+# Add this at the bottom of customs_inspection_manager.gd
+func remove_inspected_package() -> void:
+	if not active_queue.is_empty():
+		# pop_front() removes the item at index 0 and shifts everything else down
+		active_queue.pop_front()
 
 
 # The UI modal passes the team directly into this function
@@ -53,8 +68,8 @@ func _generate_shift_queue() -> void:
 	print("CustomsCargoManager: Generating cargo queue...")
 	active_queue.clear()
 
-	#shift_quota = GameConstants.CUSTOMS_QUOTA
-	#shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
+	shift_quota = GameConstants.CUSTOMS_QUOTA
+	shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
 
 	for i in range(shift_quota):
 		var package = CargoPackage.new()
@@ -63,9 +78,9 @@ func _generate_shift_queue() -> void:
 		if randf() < GameConstants.CUSTOMS_CONTRABAND_CHANCE:
 			package.is_contraband = true
 			if randf() < 0.5:
-				package.contraband_type = "Organic"
+				package.contraband_type = "Weapons"
 			else:
-				package.contraband_type = "Mineral"
+				package.contraband_type = "Drugs"
 
 		active_queue.append(package)
 	print("CustomsCargoManager: Successfully generated ", active_queue.size(), " items.")

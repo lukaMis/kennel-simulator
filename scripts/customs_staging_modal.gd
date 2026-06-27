@@ -14,6 +14,9 @@ func _ready() -> void:
 	# Hide the modal by default when the kennel loads
 	hide()
 
+	selected_team.clear()
+
+	# Connect start and cancel game buttons
 	button_start.pressed.connect(_on_start_pressed)
 	button_cancel.pressed.connect(_on_cancel_pressed)
 
@@ -31,9 +34,6 @@ func _on_start_pressed() -> void:
 	# 1. Hide the modal
 	hide()
 
-	# 2. Hand the selected team over to the manager and let it handle the rest
-	#CustomsInspectionManager.start_shift(selected_team)
-
 	# Just store the team in the manager locker for transit
 	CustomsInspectionManager.set_shift_team(selected_team)
 
@@ -42,9 +42,11 @@ func _on_start_pressed() -> void:
 
 
 func _on_cancel_pressed() -> void:
+	# 1. Hide the modal
+	hide()
+
 	# 2. Unfreeze the game if they back out!
 	GlobalState.set_game_running(true)
-	hide()
 
 
 func _refresh_ui() -> void:
@@ -89,7 +91,8 @@ func _rebuild_shift_team() -> void:
 	for dog in selected_team:
 		var btn = Button.new()
 		btn.text = "Remove %s" % dog.name
-		# When clicked, remove this specific dog
+
+		# Enable team dogs to be clicked and removed from current shift team
 		btn.pressed.connect(_on_team_dog_clicked.bind(dog))
 		team_list.add_child(btn)
 
@@ -101,5 +104,6 @@ func _on_roster_dog_selected(dog: DogResource) -> void:
 
 
 func _on_team_dog_clicked(dog: DogResource) -> void:
+	# When clicked, remove this specific dog
 	selected_team.erase(dog)
 	_refresh_ui()

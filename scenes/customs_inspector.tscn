@@ -43,7 +43,7 @@ text = "Multiplier"
 [node name="LabelRemaining" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerTopInfoBar" unique_id=250139517]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Packages remaining"
+text = "Packages to inspect:"
 
 [node name="HBoxContainerDogInfo" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1787526987]
 layout_mode = 2
