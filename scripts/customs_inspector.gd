@@ -154,7 +154,15 @@ func _process_inspection_action(is_doubting: bool) -> void:
 
 	label_dog_reaction.text = current_dog.outcome_reactions[outcome_key]
 	label_feedback.text = current_package.outcome_reactions[outcome_key]
+
 	button_next.show()
+
+	# Check if the queue is empty
+	if CustomsInspectionManager.active_queue.is_empty():
+		# Hide next package button
+		button_next.hide()
+		_set_button_end_shift_enabled(true)
+		print("Shift Complete")
 
 
 func _set_inspection_buttons_enabled(is_enabled: bool) -> void:
