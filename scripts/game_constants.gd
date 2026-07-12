@@ -20,7 +20,7 @@ const LOG_FILE_PATH: String = "user://kennel_simulator_log.txt"
 #
 # --- Customs Inspector Constants ---
 const CUSTOMS_BASE_PAYOUT: int = 100
-const CUSTOMS_QUOTA: int = 10 # How many packages per shift
+const CUSTOMS_QUOTA: int = 2 # How many packages per shift
 const CUSTOMS_CONTRABAND_CHANCE: float = 0.30 # 30% chance for a package to be illegal
 #
 # Stat Modifiers

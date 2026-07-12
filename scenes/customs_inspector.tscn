@@ -109,7 +109,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Pass"
 
-[node name="ButtonInspect" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
+[node name="ButtonDoubt" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Doubt"
@@ -123,3 +123,8 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Next package
 "
+
+[node name="ButtonEndShift" type="Button" parent="MarginContainer/VBoxContainer/CenterContainerFlowControl" unique_id=920715128]
+unique_name_in_owner = true
+layout_mode = 2
+text = "End shift!"

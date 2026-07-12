@@ -16,8 +16,9 @@ var current_package: CargoPackage
 @onready var label_package_owner: Label = %LabelPackageOwner
 @onready var label_feedback: Label = %LabelFeedback
 @onready var button_pass: Button = %ButtonPass
-@onready var button_doubt: Button = %ButtonInspect
+@onready var button_doubt: Button = %ButtonDoubt
 @onready var button_next: Button = %ButtonNext
+@onready var button_end_shift: Button = %ButtonEndShift
 
 
 func _ready() -> void:
@@ -44,6 +45,7 @@ func _ready() -> void:
 	button_next.pressed.connect(_load_next_package)
 
 	_set_inspection_buttons_enabled(false)
+	_set_button_end_shift_enabled(false)
 	# Read directly from the manager for your debug prints
 	print("Inspector Scene: Loaded successfully with ", CustomsInspectionManager.active_shift_dog, " dog.")
 	print("Inspector Scene: Loaded successfully with ", CustomsInspectionManager.active_queue.size(), " packages.")
@@ -84,6 +86,7 @@ func _load_next_package() -> void:
 
 	# Check if the queue is empty
 	if CustomsInspectionManager.active_queue.is_empty():
+		_set_button_end_shift_enabled(true)
 		print("Shift Complete")
 		return
 
@@ -154,9 +157,14 @@ func _process_inspection_action(is_doubting: bool) -> void:
 	button_next.show()
 
 
-func _set_inspection_buttons_enabled(is_enabled: bool):
+func _set_inspection_buttons_enabled(is_enabled: bool) -> void:
 	button_pass.disabled = not is_enabled
 	button_doubt.disabled = not is_enabled
 
 	button_pass.visible = is_enabled
 	button_doubt.visible = is_enabled
+
+
+func _set_button_end_shift_enabled(is_enabled: bool) -> void:
+	button_end_shift.disabled = not is_enabled
+	button_end_shift.visible = is_enabled
