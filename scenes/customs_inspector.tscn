@@ -101,12 +101,20 @@ horizontal_alignment = 1
 [node name="HBoxContainerActionButtons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2098951492]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/separation = 25
 alignment = 1
+
+[node name="ButtonNext" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1501739479]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Next package
+"
 
 [node name="ButtonPass" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1643568259]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 4
 text = "Pass"
 
 [node name="ButtonDoubt" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=1336889351]
@@ -114,17 +122,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Doubt"
 
-[node name="CenterContainerFlowControl" type="CenterContainer" parent="MarginContainer/VBoxContainer" unique_id=1903455779]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="ButtonNext" type="Button" parent="MarginContainer/VBoxContainer/CenterContainerFlowControl" unique_id=1501739479]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Next package
-"
-
-[node name="ButtonEndShift" type="Button" parent="MarginContainer/VBoxContainer/CenterContainerFlowControl" unique_id=920715128]
+[node name="ButtonEndShift" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainerActionButtons" unique_id=920715128]
 unique_name_in_owner = true
 layout_mode = 2
 text = "End shift!"
