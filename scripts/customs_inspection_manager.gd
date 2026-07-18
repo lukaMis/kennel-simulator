@@ -19,6 +19,11 @@ var shift_successes: int = 0
 var shift_mistakes: int = 0
 var shift_contraband_seized: int = 0
 
+# --- Session Stats (NOT exported, so they reset automatically) ---
+var current_synergy_multiplier: float = 1.0
+var current_confidence_level: int = 1
+var check_again_uses: int = 2
+
 
 # The modal drops off dog for the work shift here right before scene transit
 func set_shift_dog(dog: DogResource) -> void:
@@ -32,17 +37,27 @@ func initialize_shift_session() -> void:
 
 
 func start_shift() -> void:
-	# Reset the player's session stats (synergy multiplier)
-	GlobalState.player_stats.reset_session()
+	# Set baseline stats internally instead of using resources
+	current_synergy_multiplier = 1.0
+	check_again_uses = 2
+
+	if active_shift_dog != null:
+		current_confidence_level = 1 if active_shift_dog.handler_bond < 5 else 2
 
 	shift_started.emit()
 	print("Shift has started")
 
 
 func stop_shift() -> void:
+	# 1. Bank the money BEFORE clearing the shift data!
+	GlobalState.add_money(shift_current_payout)
+	GlobalState.player_stats.total_lifetime_earnings += shift_current_payout
+
+	# 2. Now wipe the shift memory clean
 	_clear_shift()
-	shift_ended.emit()
+
 	print("Shift has ended")
+	shift_ended.emit()
 
 
 # --- THE CORE MATH ENGINE ---
@@ -67,12 +82,13 @@ func process_inspection_choice(is_doubting: bool) -> Dictionary:
 	var outcome_key: String = ""
 
 	if is_correct:
-		GlobalState.player_stats.current_synergy_multiplier += 0.1
-		active_shift_dog.increase_confidence()
+		current_synergy_multiplier += 0.1
+		current_confidence_level = min(current_confidence_level + 1, 3)
+
 		outcome_key = "correct_seize" if is_doubting else "correct_pass"
 	else:
-		GlobalState.player_stats.current_synergy_multiplier = 1.0
-		active_shift_dog.decrease_confidence()
+		current_synergy_multiplier = 1.0
+		current_confidence_level = max(current_confidence_level - 1, 1)
 		outcome_key = "wrong_seize" if is_doubting else "wrong_pass"
 
 	# 3. Fetch the String Feedback
@@ -83,11 +99,11 @@ func process_inspection_choice(is_doubting: bool) -> Dictionary:
 	_remove_inspected_package()
 
 	# --- ADD THIS: Update the payout based on the NEW multiplier ---
-	shift_current_payout = int(GameConstants.CUSTOMS_BASE_PAYOUT * GlobalState.player_stats.current_synergy_multiplier)
+	shift_current_payout = int(GameConstants.CUSTOMS_BASE_PAYOUT * current_synergy_multiplier)
 
 	# 5. Package the data up for the "Dumb" UI
 	return {
-		"multiplier": GlobalState.player_stats.current_synergy_multiplier,
+		"multiplier": CustomsInspectionManager.current_synergy_multiplier,
 		"payout": shift_current_payout,
 		"dog_reaction": dog_reaction,
 		"feedback": package_feedback,

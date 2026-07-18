@@ -34,9 +34,6 @@ extends Resource
 	"wrong_pass": "dog cowering shame",
 }
 
-# --- Inspection Stats (Session) ---
-var current_confidence_level: int = 1
-
 
 # --- Existing Methods ---
 func tick_stats():
@@ -51,19 +48,6 @@ func tick_stats():
 func wake_and_rest_dog() -> void:
 	is_sleeping = false
 	energy = 100
-
-
-# --- Inspection Methods ---
-func reset_session():
-	current_confidence_level = 1 if handler_bond < 5 else 2
-
-
-func increase_confidence():
-	current_confidence_level = min(current_confidence_level + 1, 3)
-
-
-func decrease_confidence():
-	current_confidence_level = max(current_confidence_level - 1, 1)
 
 
 # --- NEW: Tracking Method ---

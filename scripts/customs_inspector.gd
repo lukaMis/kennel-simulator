@@ -62,10 +62,9 @@ func _clear_local_data() -> void:
 
 func _on_shift_started() -> void:
 	current_dog = CustomsInspectionManager.active_shift_dog
-	current_dog.reset_session()
 
-	# Initialize UI elements
-	label_multiplier.text = "Multiplier: " + str(GlobalState.player_stats.current_synergy_multiplier) + "x"
+	# Initialize UI elements by calling the Manager
+	label_multiplier.text = "Multiplier: " + str(CustomsInspectionManager.current_synergy_multiplier) + "x"
 	label_dog_name.text = current_dog.name
 	label_payout.text = "Payout: $" + str(CustomsInspectionManager.shift_current_payout)
 	label_remaining.text = "Remaining packages to inspect: " + str(CustomsInspectionManager.active_queue.size())
@@ -97,7 +96,7 @@ func _load_next_package() -> void:
 	label_remaining.text = "Remaining packages to inspect: %s/%s" % [str(CustomsInspectionManager.active_queue.size()), str(GameConstants.CUSTOMS_QUOTA)]
 
 	# Display the "Tell" (System 6: Tell phase)
-	var reaction = current_dog.tell_reactions[current_dog.current_confidence_level][current_package.is_contraband]
+	var reaction = current_dog.tell_reactions[CustomsInspectionManager.current_confidence_level][current_package.is_contraband]
 	label_dog_reaction.text = reaction
 
 	_set_inspection_buttons_enabled(true)
@@ -182,13 +181,7 @@ func _on_end_shift_pressed() -> void:
 
 
 func _on_return_home_pressed() -> void:
-	# Add the money to your global wallet here
-	GlobalState.add_money(CustomsInspectionManager.shift_current_payout)
-
-	# 1. Add the shift payout to the global lifetime earnings
-	GlobalState.player_stats.total_lifetime_earnings += CustomsInspectionManager.shift_current_payout
-
-	# Tell manager to clear memory
+	# 1. Tell the Manager to handle the paycheck and clear memory
 	CustomsInspectionManager.stop_shift()
 
 	# Transition back to your main menu/kennel scene

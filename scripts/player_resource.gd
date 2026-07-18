@@ -10,16 +10,6 @@ extends Resource
 
 var total_lifetime_earnings: int = 0
 
-# --- Session Stats (NOT exported, so they reset automatically) ---
-var current_synergy_multiplier: float = 1.0
-var check_again_uses: int = 2
-
-
-# Methods to handle logic
-func reset_session():
-	current_synergy_multiplier = 1.0
-	check_again_uses = 2
-
 
 func update_career_stats(is_correct: bool, is_contraband: bool) -> void:
 	# 1. Always log that an inspection happened
