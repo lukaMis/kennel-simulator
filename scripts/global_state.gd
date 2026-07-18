@@ -19,6 +19,9 @@ var game_info: String = "Try to look after your dogs as best as you can!"
 var log_history: Array[String] = []
 var game_is_running: bool = true
 
+# The global player profile that persists across scenes
+var player_stats: PlayerResource = PlayerResource.new()
+
 
 func _ready() -> void:
 	# Duplicate the exported array into your master roster.

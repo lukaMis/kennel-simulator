@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bnwrn0w4t3egl" path="res://scenes/cash_ui.tscn" id="3_sugp2"]
 [ext_resource type="PackedScene" uid="uid://cy3ai5s8u0ecj" path="res://scenes/info_bar.tscn" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://b3gui258ct5wp" path="res://scenes/log_viewer.tscn" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://cc0ljpbg7dmx4" path="res://player_stats.gd" id="9_85g3d"]
 [ext_resource type="PackedScene" uid="uid://73n8b5xknedp" path="res://scenes/game_time_display.tscn" id="10_choun"]
 [ext_resource type="PackedScene" uid="uid://bvlsgluajwywe" path="res://scenes/day_summary_ui.tscn" id="11_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://ducgn8p15ewwv" path="res://scenes/customs_staging_modal.tscn" id="12_trceg"]
@@ -84,5 +85,47 @@ grow_vertical = 0
 text = "Send dogs to work!"
 
 [node name="CustomsStagingModal" parent="UILayer" unique_id=1030715036 instance=ExtResource("12_trceg")]
+
+[node name="PlayerStats" type="ColorRect" parent="UILayer" unique_id=2036942502]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+script = ExtResource("9_85g3d")
+
+[node name="LabelPlayerStats" type="Label" parent="UILayer/PlayerStats" unique_id=2041645929]
+custom_minimum_size = Vector2(700, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -0.5
+offset_top = -11.5
+offset_right = 0.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonCloseModal" type="Button" parent="UILayer/PlayerStats" unique_id=1008836875]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -120.5
+offset_top = -40.0
+offset_right = 120.5
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Return to Kennel / Main Menu"
 
 [editable path="UILayer/LogViewer"]
