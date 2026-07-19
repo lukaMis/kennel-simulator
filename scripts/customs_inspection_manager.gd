@@ -43,6 +43,7 @@ func start_shift() -> void:
 
 	if active_shift_dog != null:
 		current_confidence_level = 1 if active_shift_dog.handler_bond < 5 else 2
+		active_shift_dog.total_dog_shifts_worked += 1
 
 	shift_started.emit()
 	print("Shift has started")
@@ -77,6 +78,9 @@ func process_inspection_choice(is_doubting: bool) -> Dictionary:
 	# 1. Update Permanent Stats (Dog and Player methods)
 	active_shift_dog.record_inspection_result(is_correct)
 	GlobalState.player_stats.update_career_stats(is_correct, current_package.is_contraband)
+
+	# NEW: Drain energy using the specific inspection rate instead of the general rate
+	active_shift_dog.energy = max(active_shift_dog.energy - active_shift_dog.inspection_energy_drain_rate, 0)
 
 	# 2. Calculate Math Modifiers & Confidence
 	var outcome_key: String = ""
@@ -137,15 +141,18 @@ func _generate_shift_queue() -> void:
 
 
 func _clear_shift() -> void:
-	active_shift_dog = null
-	active_queue.clear()
 	shift_current_payout = GameConstants.CUSTOMS_BASE_PAYOUT
 	shift_quota = GameConstants.CUSTOMS_QUOTA
 
-	# ADD THESE LINES to wipe the shift memory clean
+	active_shift_dog = null
+	active_queue.clear()
+
 	shift_inspections = 0
 	shift_successes = 0
 	shift_mistakes = 0
 	shift_contraband_seized = 0
+	current_synergy_multiplier = 1.0
+	current_confidence_level = 1
+	check_again_uses = 2
 
 	print("CustomsInspectionManager: Shift cleaned up.")

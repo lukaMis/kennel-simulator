@@ -160,13 +160,6 @@ func _on_end_shift_pressed() -> void:
 
 	# 2. Build the text block by reading directly from the player's global stats
 	var stats_text = "--- SHIFT COMPLETE ---\n\n"
-	#stats_text += "--- PLAYER CAREER MILESTONES ---\n"
-	#stats_text += "Total Shifts Worked: %d\n" % GlobalState.player_stats.total_inspector_games_played
-	#stats_text += "Total Packages Inspected: %d\n" % GlobalState.player_stats.total_inspections
-	#stats_text += "Successful Verdicts: %d\n" % GlobalState.player_stats.total_successful_inspections
-	#stats_text += "Mistakes Made: %d\n" % GlobalState.player_stats.total_failed_inspections
-	#stats_text += "Contraband Seized: %d\n" % GlobalState.player_stats.total_contraband_seized
-
 	stats_text += "Earnings This Shift: $%d\n" % CustomsInspectionManager.shift_current_payout
 	stats_text += "Packages Inspected: %d\n" % CustomsInspectionManager.shift_inspections
 	stats_text += "Successful Verdicts: %d\n" % CustomsInspectionManager.shift_successes
@@ -179,10 +172,17 @@ func _on_end_shift_pressed() -> void:
 	# 4. Show the modal overlay!
 	end_shift_modal.show()
 
-
-func _on_return_home_pressed() -> void:
 	# 1. Tell the Manager to handle the paycheck and clear memory
 	CustomsInspectionManager.stop_shift()
+
+
+func _on_return_home_pressed() -> void:
+	# 1. Advance the game clock by 8 hours
+	#GlobalState.add_game_time(8)
+	GlobalState.advance_game_hours(8)
+
+	# 2. REACTIVATE the game timer/running state so the kennel/main scene behaves correctly
+	GlobalState.set_game_running(true)
 
 	# Transition back to your main menu/kennel scene
 	get_tree().change_scene_to_file("res://scenes/main.tscn")

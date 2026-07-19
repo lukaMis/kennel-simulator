@@ -45,7 +45,9 @@ func _spawn_dog(dog_data: DogResource) -> void:
 func _on_time_engine_hour_passed(_current_hour: int) -> void:
 	# Tick stats for all data files directly in the Autoload
 	for dog_data in GlobalState.master_dog_roster:
-		dog_data.tick_stats()
+		#dog_data.tick_stats()
+		dog_data.tick_energy()
+		dog_data.tick_hunger()
 
 	# Update visual bars for all UIs
 	for ui in active_uis:

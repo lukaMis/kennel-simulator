@@ -6,6 +6,7 @@ signal hour_passed(current_hour: int)
 signal day_passed(current_day: int)
 signal morning_started # NEW: Fires exactly when the new workday begins!
 signal time_formatted_updated(time_string: String) # Great for updating a UI clock instantly
+signal current_game_time(day, hour, minute)
 
 # --- SIMULATION PACING ---
 # If multiplier is 60.0, then 1 real-world second = 1 in-game minute
@@ -74,6 +75,8 @@ func _broadcast_formatted_time() -> void:
 	# Formats the time into a clean "Day 1 - 08:05" string
 	var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
 	time_formatted_updated.emit(time_string)
+	current_game_time.emit(day, hour, minute)
+	print(day, hour, minute)
 
 
 func _on_game_running_state(game_is_running: bool) -> void:
@@ -83,3 +86,7 @@ func _on_game_running_state(game_is_running: bool) -> void:
 		process_mode = Node.PROCESS_MODE_INHERIT
 	else:
 		process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func advance_game_hours(hours: int) -> void:
+	hour += hours

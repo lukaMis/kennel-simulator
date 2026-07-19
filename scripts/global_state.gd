@@ -19,6 +19,8 @@ var game_info: String = "Try to look after your dogs as best as you can!"
 var log_history: Array[String] = []
 var game_is_running: bool = true
 
+var game_time_hours: int = 0
+
 # The global player profile that persists across scenes
 var player_stats: PlayerResource = PlayerResource.new()
 
@@ -100,3 +102,24 @@ func set_game_running(running: bool) -> void:
 	if game_is_running != running:
 		game_is_running = running
 		run_state_changed.emit(game_is_running)
+
+	#func add_game_time(hours: int) -> void:
+	#game_time_hours += hours
+	#print("Time advanced by ", hours, " hours. Total game time: ", game_time_hours)
+
+
+func advance_game_hours(hours: int) -> void:
+	var active_dog = CustomsInspectionManager.active_shift_dog
+
+	for h in range(hours):
+		for dog in master_dog_roster:
+			# If this is the active inspector, only handle hunger (energy is managed by the shift)
+			if dog == active_dog:
+				dog.tick_hunger()
+			# For all other dogs, apply both systems normally
+			else:
+				dog.tick_energy()
+				dog.tick_hunger()
+
+	TimeEngine.advance_game_hours(8)
+	print("Time advanced by ", hours, " hours.")
