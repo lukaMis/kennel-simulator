@@ -5,8 +5,8 @@ signal minute_passed(current_minute: int)
 signal hour_passed(current_hour: int)
 signal day_passed(current_day: int)
 signal morning_started # NEW: Fires exactly when the new workday begins!
-signal time_formatted_updated(time_string: String) # Great for updating a UI clock instantly
-signal current_game_time(day, hour, minute)
+
+signal game_time_update(time_data: Dictionary)
 
 # --- SIMULATION PACING ---
 # If multiplier is 60.0, then 1 real-world second = 1 in-game minute
@@ -18,6 +18,12 @@ var hour: int = 8 # Let's start the workday at 8:00 AM
 var day: int = 1
 var _internal_timer: float = 0.0
 var _time_is_ticking: bool = true
+
+var time_data: Dictionary = {
+	"day": 0,
+	"hour": 0,
+	"minute": 0,
+}
 
 
 func _ready() -> void:
@@ -42,7 +48,7 @@ func start_morning() -> void:
 	hour = 8
 	minute = 0
 	_internal_timer = 0.0
-	_broadcast_formatted_time()
+	_broadcast_game_time()
 	# Tell the game world it's time to wake up
 	morning_started.emit()
 
@@ -54,7 +60,7 @@ func _advance_minute() -> void:
 		_advance_hour()
 
 	minute_passed.emit(minute)
-	_broadcast_formatted_time()
+	_broadcast_game_time()
 
 
 func _advance_hour() -> void:
@@ -71,12 +77,14 @@ func _advance_day() -> void:
 	day_passed.emit(day)
 
 
-func _broadcast_formatted_time() -> void:
-	# Formats the time into a clean "Day 1 - 08:05" string
-	var time_string = "Day %d - %02d:%02d" % [day, hour, minute]
-	time_formatted_updated.emit(time_string)
-	current_game_time.emit(day, hour, minute)
-	print(day, hour, minute)
+func _broadcast_game_time() -> void:
+	# This updates the existing dictionary instead of making a new one!
+	time_data.day = day
+	time_data.hour = hour
+	time_data.minute = minute
+
+	game_time_update.emit(time_data)
+	#print(time_data)
 
 
 func _on_game_running_state(game_is_running: bool) -> void:
@@ -88,5 +96,6 @@ func _on_game_running_state(game_is_running: bool) -> void:
 		process_mode = Node.PROCESS_MODE_DISABLED
 
 
-func advance_game_hours(hours: int) -> void:
-	hour += hours
+func advance_game_hours(hours_to_add: int) -> void:
+	hour += hours_to_add
+	_broadcast_game_time()

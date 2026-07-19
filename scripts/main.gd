@@ -11,7 +11,7 @@ extends Node
 func _ready() -> void:
 	# Tune into the time engine's daily broadcast
 	TimeEngine.day_passed.connect(_on_day_passed)
-	TimeEngine.current_game_time.connect(game_time_update)
+	TimeEngine.game_time_update.connect(_on_game_time_update)
 
 	# 1. Connect the new work button!
 	button_work.pressed.connect(_on_button_work_pressed)
@@ -28,9 +28,10 @@ func _on_button_work_pressed() -> void:
 	staging_modal.open_modal()
 
 
-func game_time_update(day, hour, minute) -> void:
-	_update_work_button_visibility(day, hour, minute)
+func _on_game_time_update(time_data: Dictionary) -> void:
+	_update_work_button_visibility(time_data.hour)
+	#print(time_data)
 
 
-func _update_work_button_visibility(day, hour, minute) -> void:
-	button_work.visible = (hour < 15)
+func _update_work_button_visibility(current_game_hour: int) -> void:
+	button_work.visible = (current_game_hour < 15)

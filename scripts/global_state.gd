@@ -21,6 +21,8 @@ var game_is_running: bool = true
 
 var game_time_hours: int = 0
 
+var current_game_time: Dictionary = { }
+
 # The global player profile that persists across scenes
 var player_stats: PlayerResource = PlayerResource.new()
 
@@ -42,6 +44,7 @@ func _ready() -> void:
 
 	# 2. Seed our in-memory array with the session start header
 	log_history.append("=== Simulation Session Started ===")
+	TimeEngine.game_time_update.connect(_on_game_time_update)
 
 
 # Called automatically by Godot when the game engine shuts down/closes
@@ -108,10 +111,10 @@ func set_game_running(running: bool) -> void:
 	#print("Time advanced by ", hours, " hours. Total game time: ", game_time_hours)
 
 
-func advance_game_hours(hours: int) -> void:
+func advance_game_hours(hours_to_add: int) -> void:
 	var active_dog = CustomsInspectionManager.active_shift_dog
 
-	for h in range(hours):
+	for h in range(hours_to_add):
 		for dog in master_dog_roster:
 			# If this is the active inspector, only handle hunger (energy is managed by the shift)
 			if dog == active_dog:
@@ -121,5 +124,10 @@ func advance_game_hours(hours: int) -> void:
 				dog.tick_energy()
 				dog.tick_hunger()
 
-	TimeEngine.advance_game_hours(8)
-	print("Time advanced by ", hours, " hours.")
+	TimeEngine.advance_game_hours(hours_to_add)
+	print("Time advanced by ", hours_to_add, " hours.")
+
+
+func _on_game_time_update(time_data: Dictionary) -> void:
+	current_game_time = time_data
+	#print(current_game_time)
