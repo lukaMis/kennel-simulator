@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bxcdecvqfqpdx"]
+
+[ext_resource type="Script" uid="uid://brhn6cbs1823" path="res://scripts/debug_modal_parent.gd" id="1_ljda6"]
+
+[node name="DebugModalParent" type="CanvasLayer" unique_id=542279368]
+script = ExtResource("1_ljda6")
+
+[node name="DebugModal" type="ColorRect" parent="." unique_id=613192566]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.90588236)
+
+[node name="PanelContainer" type="PanelContainer" parent="DebugModal" unique_id=282260204]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugModal/PanelContainer" unique_id=1080337796]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="DebugModal/PanelContainer/VBoxContainer" unique_id=215662612]
+layout_mode = 2
+text = "Live Variable Editor"
+
+[node name="ObjectSelector" type="OptionButton" parent="DebugModal/PanelContainer/VBoxContainer" unique_id=508300234]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="DebugModal/PanelContainer/VBoxContainer" unique_id=114904879]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VariableListContainer" type="VBoxContainer" parent="DebugModal/PanelContainer/VBoxContainer/ScrollContainer" unique_id=1209781215]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 560)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ButtonClose" type="Button" parent="DebugModal/PanelContainer/VBoxContainer" unique_id=1311390750]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close"

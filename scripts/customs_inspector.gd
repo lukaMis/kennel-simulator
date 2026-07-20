@@ -70,7 +70,7 @@ func _on_shift_started() -> void:
 	label_remaining.text = "Remaining packages to inspect: " + str(CustomsInspectionManager.active_queue.size())
 
 	# Load the first package to start the game
-	_load_next_package()
+	#_load_next_package()
 
 
 func _on_shift_ended() -> void:
